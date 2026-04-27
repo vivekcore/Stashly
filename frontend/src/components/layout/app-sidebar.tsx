@@ -1,5 +1,4 @@
 import {
-  BrainCircuit,
   FileText,
   LayoutDashboard,
   Linkedin,
@@ -9,6 +8,7 @@ import {
   Youtube,
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router";
+import Logo from "@/assets/logo.png";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { Button } from "@/components/ui/button";
@@ -34,14 +34,12 @@ export function AppSidebar() {
       <button
         type="button"
         onClick={() => navigate("/")}
-        className="flex items-center gap-3 border-b border-border/60 px-6 py-6 text-left"
+        className="flex items-center gap-3 border-b border-border/60 px-6 py-4 text-left"
       >
-        <div className="rounded-2xl bg-primary/10 p-3 text-primary">
-          <BrainCircuit size={28} />
-        </div>
+        <img src={Logo} alt="Stashly Logo" className=" rounded-2xl" width={55} height={55} />
         <div>
-          <p className="text-lg font-semibold tracking-tight">Stashly</p>
-          <p className="text-sm text-muted-foreground">Save and organize content</p>
+          <p className="text-3xl mt-1.5 font-semibold tracking-tight ">Stashly</p>
+          <p className="text-xs text-muted-foreground">Save and organize content</p>
         </div>
       </button>
 

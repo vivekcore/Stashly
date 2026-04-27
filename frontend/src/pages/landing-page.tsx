@@ -1,5 +1,6 @@
-import { ArrowRight, BrainCircuit } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
+import Logo from "@/assets/logo.png";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,9 +29,9 @@ export default function LandingPage() {
       <Card className="relative z-10 w-full max-w-4xl border-border/60 bg-card/80 backdrop-blur-xl">
         <CardContent className="grid gap-10 p-8 md:grid-cols-[1.3fr_1fr] md:p-12">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 rounded-full border border-border/70 bg-background/70 px-4 py-2">
-              <BrainCircuit className="text-primary" size={18} />
-              <span className="text-sm font-medium">Stashly</span>
+            <div className="inline-flex justify-center items-center gap-2 rounded-full border border-border/70 bg-background/70 px-4 py-2">
+              <img src={Logo} alt="Stashly Logo" className="text-primary" width={18} height={18} />
+              <span className="text-md font-medium">Stashly</span>
             </div>
 
             <div className="space-y-4">
