@@ -15,7 +15,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-        <BrowserRouter basename="/Stashly">
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<SignUpPage />} />
