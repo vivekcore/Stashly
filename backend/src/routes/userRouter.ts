@@ -1,13 +1,11 @@
 import { UserAuth, Uservalidation } from "../middlewares/userMiddleware.js";
 import jwt from "jsonwebtoken";
-import getConfig from "../config.js";
+import getConfig from "../utils/config.js";
 import models, { contentTypes } from "../db/db.js";
-
 import { Request, Response } from "express";
 import { compare, hash } from "bcrypt-ts";
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
-//import z from "zod";
 const router = Router();
 const env = getConfig();
 
@@ -69,22 +67,8 @@ router.post("/signin", async (req: Request, res: Response) => {
   }
 });
 router.post("/content", UserAuth, async (req: Request, res: Response) => {
-  const { link, type, title, description, linkType,tags } = req.body;
+  const { link, type, title, description, linkType, tags } = req.body;
   try {
-    // const schemaValid = z.object({
-    //   link: z.string(),
-    //   type: z.enum(contentTypes),
-    //   title: z.string(),
-    // });
-    // const parse = schemaValid.safeParse(req.body);
-    // if (!parse.success) {
-    //   return res.status(400).json({
-    //     msg: parse.error.issues.map((val) => ({
-    //       Field: val.path,
-    //       Message: val.message,
-    //     })),
-    //   });
-    // }
     const result = await models.contentModel.create({
       link,
       type,
@@ -92,7 +76,6 @@ router.post("/content", UserAuth, async (req: Request, res: Response) => {
       tags: tags || [],
       description,
       linkType,
-      //@ts-ignore
       userId: req.userId,
     });
     res.status(200).json({
@@ -106,7 +89,6 @@ router.post("/content", UserAuth, async (req: Request, res: Response) => {
   }
 });
 router.get("/content", UserAuth, async (req: Request, res: Response) => {
-  //@ts-ignore
   const userId = req.userId;
   try {
     const resp = await models.contentModel
@@ -125,9 +107,7 @@ router.get(
   "/content/linktype",
   UserAuth,
   async (req: Request, res: Response) => {
-    //@ts-ignore
     const userId = req.userId;
-    // linkType is sent as a query parameter from the client (axios.get with params)
     const linkType = String(req.query.linkType || "");
     try {
       const resp = await models.contentModel
@@ -144,7 +124,6 @@ router.get(
   },
 );
 router.delete("/content", UserAuth, async (req: Request, res: Response) => {
-  //@ts-ignore
   const userId = req.userId;
   const { contentId } = req.body;
   try {
@@ -162,11 +141,8 @@ router.delete("/content", UserAuth, async (req: Request, res: Response) => {
   }
 });
 router.get("/content/share", UserAuth, async (req: Request, res: Response) => {
-  //@ts-ignore
   const userId = req.userId;
   const { share } = req.body;
-  //   const { contentId } = req.body.contentId;
-  //   const { host } = req.headers;
   try {
     if (share) {
       const existingLink = await models.linksModel.findOne({ userId });
@@ -193,16 +169,13 @@ router.get("/content/share", UserAuth, async (req: Request, res: Response) => {
         msg: "Removed sharable link",
       });
     }
-    // const response = await models.contentModel.findOne({ userId, contentId });
-    // res.json({
-    //   Link: `${host}/user/content/${response?.id}`,
-    // });
   } catch (error) {
     res.json({
       msg: error,
     });
   }
 });
+
 router.get("/content/:shareLink", async (req: Request, res: Response) => {
   const hash = req.params.shareLink;
 
@@ -235,15 +208,5 @@ router.get("/content/:shareLink", async (req: Request, res: Response) => {
       msg: error,
     });
   }
-  //   try {
-  //     const response = await models.contentModel.findOne({ _id: contentId });
-  //     res.json({
-  //       Content: response,
-  //     });
-  //   } catch (error) {
-  //     res.json({
-  //       msg: error,
-  //     });
-  //   }
 });
 export default router;

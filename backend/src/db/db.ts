@@ -1,6 +1,23 @@
-import mongoose from "mongoose";
+import mongoose, { connect } from "mongoose";
 import { Types } from "mongoose";
+import getConfig from "../utils/config.js";
 export const contentTypes = ["image", "video", "article", "audio"];
+
+const env = getConfig();
+
+export async function ConnectDB() {
+  try {
+    await connect(env.DATABASE_URL, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+      retryWrites: true,
+    });
+  } catch (error) {
+    console.error("MongoDB connection failed:", error);
+    throw error;
+  }
+}
 
 const User = new mongoose.Schema({
   Username: {
@@ -14,26 +31,21 @@ const User = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
 });
 
-// const Tags = new mongoose.Schema({
-//   title: { type: [String], required: true },
-// });
-
 const Content = new mongoose.Schema({
   link: { type: String, required: true },
-  linkType: {type:String},
+  linkType: { type: String },
   type: { type: String, enum: contentTypes, required: true },
   title: { type: String, required: true },
-  description: {type: String},
- // tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tags" }],
- tags: {type: [String]},
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  description: { type: String },
+  tags: { type: [String] },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 });
 
 const Link = new mongoose.Schema({
   hash: { type: String },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "user",
     required: true,
     unique: true,
   },
@@ -42,6 +54,5 @@ const Link = new mongoose.Schema({
 const userModel = mongoose.model("User", User);
 const contentModel = mongoose.model("Content", Content);
 const linksModel = mongoose.model("Link", Link);
-//const tagsModel = mongoose.model("Tags", Tags);
 
 export default { userModel, contentModel, linksModel };
