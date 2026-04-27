@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: stashly-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm run start
+    repo: https://github.com/vivekinz/Stashly
+    branch: main
+    rootDir: backend
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: USER_SECRET_KEY
+        sync: false
+      - key: SALTROUND
+        value: "10"

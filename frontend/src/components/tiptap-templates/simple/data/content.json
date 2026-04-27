@@ -2,6 +2,20 @@
   "type": "doc",
   "content": [
     {
+      "type":"blockquote",
+      "attrs":{
+        "textAlign":"left",
+        "level":2,
+        "color":"red"
+      },
+      "content":[
+        {
+          "type":"text",
+          "text":"Note: This text editor is currently not saving your data!"
+        }
+      ]
+    },
+    {
       "type": "heading",
       "attrs": {
         "textAlign": null,
