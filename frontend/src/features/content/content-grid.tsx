@@ -124,7 +124,7 @@ export function ContentGrid({ linkType }: ContentGridProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
-      {items.map((item) => (
+      {Array.isArray(items) && items?.map((item) => (
         <ContentCard key={item._id} item={item} onDelete={handleDelete} />
       ))}
     </div>

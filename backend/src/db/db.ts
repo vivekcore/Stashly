@@ -38,14 +38,14 @@ const Content = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
   tags: { type: [String] },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 const Link = new mongoose.Schema({
   hash: { type: String },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
     required: true,
     unique: true,
   },

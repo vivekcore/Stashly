@@ -13,6 +13,6 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.listen(env.PORT, async () => {
   ConnectDB();
-  app.use(errorHandler);
+  //app.use(errorHandler);
   console.log(`Server Listning at port ${env.PORT}`);
 });
