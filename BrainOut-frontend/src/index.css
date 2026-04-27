@@ -1,0 +1,203 @@
+@import './styles/_variables.scss';
+@import './styles/_keyframe-animations.scss';
+
+@import "tailwindcss";
+
+/* =============================================
+   THEME — registers custom Tailwind classes
+   ============================================= */
+@theme {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent); /* new theme color */
+  --color-warning: var(--warning); /* new theme color */
+
+  /* Gradients */
+  --background-image-gradient-top: var(--gradient-top);
+  --background-image-gradient-right: var(--gradient-right);
+  --background-image-gradient-bottom: var(--gradient-bottom);
+  --background-image-gradient-left: var(--gradient-left);
+  --background-image-gradient-top-right: var(--gradient-top-right);
+  --background-image-gradient-bottom-right: var(--gradient-bottom-right);
+  --background-image-gradient-top-left: var(--gradient-top-left);
+  --background-image-gradient-bottom-left: var(--gradient-bottom-left);
+  --background-image-gradient-radial: var(--gradient-radial);
+}
+
+/* =============================================
+   LIGHT MODE (default)
+   ============================================= */
+@layer base {
+  :root {
+    /* Colors */
+    --background: #f0f2f5; /* lighter, not pure white */
+    --foreground: #333333; /* dark grey instead of black */
+    --muted: #ababab3a; /* medium grey for muted elements */
+    --subtle: #666666; /* softer text */
+    --accent: #4a90e2; /* new primary accent blue */
+    --warning: #f5a623; /* new warning/orange color */
+
+    /* Gradients */
+    --gradient-top: linear-gradient(0deg, #f0f2f5, #cccccc, #666666, #333333);
+    --gradient-right: linear-gradient(
+      90deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-bottom: linear-gradient(
+      180deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-left: linear-gradient(
+      270deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-top-right: linear-gradient(
+      45deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-bottom-right: linear-gradient(
+      135deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-top-left: linear-gradient(
+      225deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-bottom-left: linear-gradient(
+      315deg,
+      #f0f2f5,
+      #cccccc,
+      #666666,
+      #333333
+    );
+    --gradient-radial: radial-gradient(#f0f2f5, #cccccc, #666666, #333333);
+  }
+
+  /* =============================================
+   DARK MODE (auto switches when .dark is on <html>)
+   ============================================= */
+  .dark {
+    /* Colors */
+    --background: #1a1a1a; /* dark grey, not pitch black */
+    --foreground: #e0e0e0; /* light grey text */
+    --muted: #635f5f; /* mid grey for muted */
+    --subtle: #888888; /* softer highlighting */
+    --accent: #4a90e2; /* keep accent consistent */
+    --warning: #f5a623; /* keep warning consistent */
+
+    /* Gradients */
+    --gradient-top: linear-gradient(0deg, #1a1a1a, #444444, #888888, #e0e0e0);
+    --gradient-right: linear-gradient(
+      90deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-bottom: linear-gradient(
+      180deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-left: linear-gradient(
+      270deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-top-right: linear-gradient(
+      45deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-bottom-right: linear-gradient(
+      135deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-top-left: linear-gradient(
+      225deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-bottom-left: linear-gradient(
+      315deg,
+      #1a1a1a,
+      #444444,
+      #888888,
+      #e0e0e0
+    );
+    --gradient-radial: radial-gradient(#1a1a1a, #444444, #888888, #e0e0e0);
+  }
+}
+
+@layer utilities {
+
+  /* Hide scrollbar completely */
+  .scrollbar-none {
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  /* Thin rounded gray — light theme */
+  .scrollbar-light {
+    scrollbar-width: thin;
+    scrollbar-color: #888888 transparent;
+    &::-webkit-scrollbar          { width: 5px; height: 5px; }
+    &::-webkit-scrollbar-track    { background: transparent; }
+    &::-webkit-scrollbar-thumb    { background-color: #cbd5e1; border-radius: 9999px; }
+    &::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
+  }
+
+  /* Thin rounded gray — dark theme */
+  .scrollbar-dark {
+    scrollbar-width: thin;
+    scrollbar-color: #888888 transparent;
+    &::-webkit-scrollbar          { width: 5px; height: 5px; }
+    &::-webkit-scrollbar-track    { background: transparent; }
+    &::-webkit-scrollbar-thumb    { background-color: #475569; border-radius: 9999px; }
+    &::-webkit-scrollbar-thumb:hover { background-color: #64748b; }
+  }
+
+  /* Ghost — only visible on hover */
+  .scrollbar-ghost {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    &::-webkit-scrollbar          { width: 5px; height: 5px; }
+    &::-webkit-scrollbar-track    { background: transparent; }
+    &::-webkit-scrollbar-thumb    { background-color: transparent; border-radius: 9999px; transition: background-color 0.2s; }
+    &:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+  }
+
+}
+
