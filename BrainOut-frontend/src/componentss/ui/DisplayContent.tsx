@@ -59,7 +59,8 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
     });
     notify();
   }
-  console.log(linkType);
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,7 +72,7 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
               Authorization: token,
             },
           });
-          console.log(res.data.msg);
+
           const payload = res.data.msg || res.data;
           setData(Array.isArray(payload) ? payload : []);
         } else {
@@ -81,7 +82,7 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
               Authorization: token || "",
             },
           });
-          console.log(res.data.msg);
+
           const payload = res.data.msg || res.data;
           setData(Array.isArray(payload) ? payload : []);
         }
@@ -90,7 +91,8 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
       }
     };
     fetchData();
-  }, [token]);
+  }, []);
+
   if (data.length === 0) {
     return (
       <div className="mx-auto my-auto">
@@ -110,6 +112,7 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
       </div>
     );
   }
+
   return (
     <div className="mt-15 ml-72 grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
       {data.map((val) => {

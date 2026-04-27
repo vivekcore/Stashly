@@ -14,9 +14,9 @@ const User = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
 });
 
-const Tags = new mongoose.Schema({
-  title: { type: String, required: true },
-});
+// const Tags = new mongoose.Schema({
+//   title: { type: [String], required: true },
+// });
 
 const Content = new mongoose.Schema({
   link: { type: String, required: true },
@@ -24,7 +24,8 @@ const Content = new mongoose.Schema({
   type: { type: String, enum: contentTypes, required: true },
   title: { type: String, required: true },
   description: {type: String},
-  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tags" }],
+ // tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tags" }],
+ tags: {type: [String]},
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
@@ -41,6 +42,6 @@ const Link = new mongoose.Schema({
 const userModel = mongoose.model("User", User);
 const contentModel = mongoose.model("Content", Content);
 const linksModel = mongoose.model("Link", Link);
-const tagsModel = mongoose.model("Tags", Tags);
+//const tagsModel = mongoose.model("Tags", Tags);
 
-export default { userModel, contentModel, linksModel, tagsModel };
+export default { userModel, contentModel, linksModel };

@@ -115,7 +115,7 @@ export const Card = (props: CardProps) => {
       <div className="mt-5 flex flex-wrap gap-2">
         {props.Tags.map((val, index) => (
           <span
-            className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors"
+            className="bg-accent/50 text-secondary-foreground hover:bg-secondary/80 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors"
             key={index}
           >
             {val}

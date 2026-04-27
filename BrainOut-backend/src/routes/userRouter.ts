@@ -69,7 +69,7 @@ router.post("/signin", async (req: Request, res: Response) => {
   }
 });
 router.post("/content", UserAuth, async (req: Request, res: Response) => {
-  const { link, type, title, description, linkType } = req.body;
+  const { link, type, title, description, linkType,tags } = req.body;
   try {
     // const schemaValid = z.object({
     //   link: z.string(),
@@ -89,7 +89,7 @@ router.post("/content", UserAuth, async (req: Request, res: Response) => {
       link,
       type,
       title,
-      tags: [],
+      tags: tags || [],
       description,
       linkType,
       //@ts-ignore
