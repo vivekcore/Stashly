@@ -31,7 +31,7 @@ const SignUp = () => {
 
       console.log("signed up", response);
       if (response.status === 200) {
-        navigate("/dashboard");
+        navigate("/home/dashboard");
         localStorage.removeItem('token');
         localStorage.setItem('token',response.data.token)
         dispatch(clearUsername());

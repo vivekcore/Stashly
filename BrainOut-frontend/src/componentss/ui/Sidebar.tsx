@@ -16,9 +16,9 @@ const Sidebar = () => {
   return (
     <div className="bg-background text-foreground fixed top-0 flex min-h-screen w-72 flex-col justify-between border-r">
       <div>
-        <div className="mb-4 flex items-center justify-center gap-2 border-b py-4">
+        <div onClick={() => navigate("/")} className="mb-4 cursor-pointer flex items-center justify-center gap-2 border-b py-4">
           <span>{<BrainCircuit size={44} />}</span>
-          <span className="text-3xl font-bold tracking-wider">BrainOut</span>
+          <span className="text-3xl font-bold tracking-wider">Stashly</span>
         </div>
          <SidebarItem onClick={()=> navigate('dashboard')} icons={<LayoutDashboard size="24" />} title={"Dashboard"} />
         <SidebarItem onClick={()=> navigate('youtube')} icons={<Youtube size="24" />} title={"Youtube"} />

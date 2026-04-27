@@ -2,7 +2,7 @@ import type { ReactElement } from "react"
 
 
 interface sidebarProp {
-    title: String,
+    title: string,
     icons: ReactElement,
     onClick: () => void,
 }

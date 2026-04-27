@@ -1,45 +1,29 @@
-import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
-
-
-
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 const TextEditor = () => {
   return (
-    <div className="">
- <SimpleEditor />
+    <div className="min-h-screen">
+      <SimpleEditor />
     </div>
-  
-  )
-}
+  );
+};
 
-export default TextEditor
-
-
-
-
-
-
-
-
-
-
-
-
+export default TextEditor;
 
 // import { useEditor, EditorContent } from '@tiptap/react'
 // import StarterKit from '@tiptap/starter-kit'
-// import { 
-//   Bold, 
-//   Italic, 
-//   Strikethrough, 
-//   Code, 
-//   List, 
+// import {
+//   Bold,
+//   Italic,
+//   Strikethrough,
+//   Code,
+//   List,
 //   ListOrdered,
 //   Heading1,
 //   Heading2,
 //   Quote,
 //   Undo,
-//   Redo 
+//   Redo
 // } from 'lucide-react'
 
 // const MenuBar = ({ editor }: { editor: any }) => {
@@ -82,9 +66,9 @@ export default TextEditor
 //       >
 //         <Code size={18} className='text-foreground' />
 //       </button>
-      
+
 //       <div className="w-px h-8 bg-background mx-1"></div>
-      
+
 //       <button
 //         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
 //         className={`p-2 rounded-md hover:bg-muted transition-colors ${editor.isActive('heading', { level: 1 }) ? 'bg-gray-200 text-blue-600' : 'text-gray-700'}`}

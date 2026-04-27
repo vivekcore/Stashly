@@ -40,7 +40,7 @@ const SignIn = () => {
         dispatch(clearUsername());
         dispatch(setUsername(userName));
         localStorage.setItem("token", response.data.token);
-        navigate("/dashboard");
+        navigate("/home/dashboard");
       }
       // store token locally; the app can read this later to set auth state
       // TODO: dispatch redux action or call a hook to update authenticated user

@@ -1,8 +1,8 @@
 import { YoutubeIcon } from "../../icons/youtubeIcon";
 import { ShareIcon } from "../../icons/shareIcon";
 import { FileIcon } from "../../icons/fileIcon";
-import { Card } from "./Card";
-import { useEffect, useState } from "react";
+import { Card, type ContentType } from "./Card";
+import { useState } from "react";
 import axios from "axios";
 import { DATABASE_URL } from "../../config";
 import NoData from "../../assets/NoData.svg";
@@ -15,7 +15,7 @@ interface ContentItem {
   title: string;
   link: string;
   linkType: string;
-  type: string;
+  type: ContentType;
   tags?: string[];
   description?: string;
 }
@@ -24,6 +24,7 @@ interface DisplayCardsProps {
 }
 const DisplayCards = ({ linkType }: DisplayCardsProps) => {
   const dispatch = useAppDispatch();
+  const [refetch,setrefetch] = useState(false);
   const [data, setData] = useState<ContentItem[]>([]);
   const token = localStorage.getItem("token");
   const notify = () => toast("Content Deleted Sucessfully ✔️");
@@ -57,11 +58,12 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
       headers: { "Content-Type": "application/json", Authorization: token },
       data: { contentId: id },
     });
+    setrefetch(!refetch)
     notify();
   }
 
 
-  useEffect(() => {
+
     const fetchData = async () => {
       try {
         if (linkType !== "Other") {
@@ -91,7 +93,7 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
       }
     };
     fetchData();
-  }, []);
+
 
   if (data.length === 0) {
     return (
@@ -116,7 +118,7 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
   return (
     <div className="mt-15 ml-72 grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
       {data.map((val) => {
-        let cardType = val.type as any;
+        let cardType:ContentType = val.type;
         let imageUrl: string | undefined;
         let linkUrl = val.link;
 
@@ -125,7 +127,7 @@ const DisplayCards = ({ linkType }: DisplayCardsProps) => {
           linkUrl = "";
         }
         if (val.linkType && val.linkType.toLowerCase() !== "other") {
-          cardType = val.linkType.toLowerCase();
+          cardType = val.linkType.toLowerCase() as ContentType;
         }
 
         return (

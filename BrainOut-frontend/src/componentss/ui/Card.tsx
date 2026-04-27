@@ -3,7 +3,7 @@ import { getEmbedUrl } from "../../Helper/YtEmbeedUrl";
 import TwitterEmbed from "../../Helper/TwitterEmbeedTweets";
 import LinkedInEmbed from "../../Helper/LinkedInEmbed";
 
-type ContentType =
+export type ContentType =
   | "twitter"
   | "youtube"
   | "linkedin"

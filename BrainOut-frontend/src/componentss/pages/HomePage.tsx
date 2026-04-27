@@ -14,6 +14,9 @@ const HomePage = () => {
     if (!token) {
       navigate("/signin");
     }
+    else{
+      navigate("/home/dashboard")
+    }
   }, []);
   return (
     <div className="bg-background relative flex flex-col ">
