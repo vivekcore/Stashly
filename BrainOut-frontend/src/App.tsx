@@ -1,39 +1,74 @@
 import { Provider } from "react-redux";
-import HomePage from "./componentss/pages/HomePage";
-import { ThemeProvider } from "./componentss/themeprovider";
+import { ToastContainer } from "react-toastify";
 import { store } from "./app/store";
-import { BrowserRouter, Route, Routes } from "react-router";
-import SignUp from "./componentss/pages/SignUp";
-import SignIn from "./componentss/pages/SignIn";
-import Youtube from "./componentss/pages/sidebarPages/Youtube";
-import Twitter from "./componentss/pages/sidebarPages/Twitter";
-import LinkedIn from "./componentss/pages/sidebarPages/LinkedIn";
-import DisplayCards from "./componentss/pages/sidebarPages/Dashboard";
-import TextEditor from "./componentss/pages/sidebarPages/TextEditor";
-import LandingPage from "./componentss/pages/LandingPage";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+
+import { ProtectedLayout } from "@/components/layout/protected-layout";
+import { ThemeProvider } from "@/components/theme-provider";
+import ContentPage from "@/pages/content-page";
+import EditorPage from "@/pages/editor-page";
+import LandingPage from "@/pages/landing-page";
+import SignInPage from "@/pages/sign-in-page";
+import SignUpPage from "@/pages/sign-up-page";
 
 function App() {
   return (
-    <div className="bg-background">
-      <Provider store={store}>
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/home" element={<HomePage />}>
-                <Route path="youtube" element={<Youtube />} />
-                <Route path="twitter" element={<Twitter />} />
-                <Route path="linkedin" element={<LinkedIn />} />
-                <Route path="dashboard" element={<DisplayCards />} />
-                <Route path="text-editor" element={<TextEditor />} />
-              </Route>
-              <Route path="/" element={<LandingPage />}></Route>
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/signin" element={<SignIn />} />
-            </Routes>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Provider>
-    </div>
+    <Provider store={store}>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/home" element={<ProtectedLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route
+                path="dashboard"
+                element={
+                  <ContentPage
+                    title="Dashboard"
+                    description="All saved content in one place, regardless of source."
+                    filter="Other"
+                  />
+                }
+              />
+              <Route
+                path="youtube"
+                element={
+                  <ContentPage
+                    title="Youtube"
+                    description="Video links grouped in a single, consistent view."
+                    filter="Youtube"
+                  />
+                }
+              />
+              <Route
+                path="twitter"
+                element={
+                  <ContentPage
+                    title="Twitter"
+                    description="Tweets and threads without the old duplicated page wrappers."
+                    filter="Twitter"
+                  />
+                }
+              />
+              <Route
+                path="linkedin"
+                element={
+                  <ContentPage
+                    title="LinkedIn"
+                    description="Professional posts collected in the same layout as everything else."
+                    filter="Linkedin"
+                  />
+                }
+              />
+              <Route path="text-editor" element={<EditorPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+        <ToastContainer position="bottom-right" />
+      </ThemeProvider>
+    </Provider>
   );
 }
 

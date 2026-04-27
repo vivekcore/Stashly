@@ -63,6 +63,6 @@ out/
 # Node
 package-lock.json
 yarn.lock
-
+plan.md
 # Testing
 .mocha_output
