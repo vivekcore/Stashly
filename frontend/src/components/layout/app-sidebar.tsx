@@ -29,7 +29,8 @@ export function AppSidebar() {
   const username = useAppSelector((state) => state.user.username) || "Guest";
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-border/60 bg-card/70 backdrop-blur lg:flex lg:flex-col">
+   
+    <aside className="hidden w-72 shrink-0 border-r h-screen sticky top-0 overflow-y-auto border-border/60 bg-card/70 backdrop-blur lg:flex lg:flex-col">
       <button
         type="button"
         onClick={() => navigate("/")}
@@ -84,5 +85,6 @@ export function AppSidebar() {
         </Button>
       </div>
     </aside>
+
   );
 }

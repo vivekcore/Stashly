@@ -20,7 +20,7 @@ export default function ContentPage({
 }: ContentPageProps) {
   return (
     <div className="space-y-6">
-      <Card className="border-border/60 bg-gradient-to-r from-card to-card/70">
+      <Card className="border-border/60 bg-linear-to-r from-card to-card/70">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

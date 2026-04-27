@@ -87,7 +87,7 @@ const MainToolbarContent = ({
   return (
     <>
       <ToolbarGroup>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </ToolbarGroup>
       <Spacer />
       <ToolbarGroup>
@@ -241,7 +241,7 @@ export function SimpleEditor() {
   }, [isMobile, mobileView]);
 
   return (
-    <div className="bg-background ml-72">
+    <div className="bg-background">
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
           className="h-15 px-10"
