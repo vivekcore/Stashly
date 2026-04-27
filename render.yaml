@@ -2,10 +2,10 @@ services:
   - type: web
     name: stashly-backend
     env: node
-    buildCommand: npm install
-    startCommand: npm run start
-    repo: https://github.com/vivekinz/Stashly
-    branch: main
+    buildCommand: yarn && yarn build
+    startCommand: yarn start
+    repo: https://github.com/vivekcore/Stashly
+    branch: master
     rootDir: backend
     envVars:
       - key: DATABASE_URL
