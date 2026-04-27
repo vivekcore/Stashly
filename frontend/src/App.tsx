@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { store } from "./app/store";
 import { HashRouter, Navigate, Route, Routes } from "react-router";
-
+import { Analytics } from "@vercel/analytics/react"
 import { ProtectedLayout } from "@/components/layout/protected-layout";
 import { ThemeProvider } from "@/components/theme-provider";
 import ContentPage from "@/pages/content-page";
@@ -68,6 +68,7 @@ function App() {
         </HashRouter>
         <ToastContainer position="bottom-right" />
       </ThemeProvider>
+      <Analytics/>
     </Provider>
   );
 }
