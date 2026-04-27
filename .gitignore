@@ -16,7 +16,7 @@ dist/
 dist-ssr/
 build/
 *.tsbuildinfo
-
+.codex
 # IDE and Editor files
 .vscode/
 .idea/

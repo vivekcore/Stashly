@@ -29,16 +29,15 @@ export function AppSidebar() {
   const username = useAppSelector((state) => state.user.username) || "Guest";
 
   return (
-   
-    <aside className="hidden w-72 shrink-0 border-r h-screen sticky top-0 overflow-y-auto border-border/60 bg-card/70 backdrop-blur lg:flex lg:flex-col">
+    <aside className="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto border-r border-border/60 bg-card/78 backdrop-blur lg:flex lg:flex-col">
       <button
         type="button"
         onClick={() => navigate("/")}
-        className="flex items-center gap-3 border-b border-border/60 px-6 py-4 text-left"
+        className="flex cursor-pointer items-center gap-3 border-b border-border/60 px-6 py-4 text-left"
       >
-        <img src={Logo} alt="Stashly Logo" className=" rounded-2xl" width={55} height={55} />
+        <img src={Logo} alt="Stashly Logo" className="rounded-2xl" width={48} height={48} />
         <div>
-          <p className="text-3xl mt-1.5 font-semibold tracking-tight ">Stashly</p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight">Stashly</p>
           <p className="text-xs text-muted-foreground">Save and organize content</p>
         </div>
       </button>
