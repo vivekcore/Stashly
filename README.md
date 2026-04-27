@@ -1,10 +1,10 @@
-# BrainOut
+# Stashly
 
 A full-stack collaborative note-taking and content creation platform with a rich text editor powered by Tiptap.
 
 ## 🎯 Project Overview
 
-BrainOut is a web application designed for users to create, edit, and collaborate on rich-text documents. The platform features a powerful editor with extensive formatting capabilities, user authentication, and real-time interactions.
+Stashly is a web application designed for users to create, edit, and collaborate on rich-text documents. The platform features a powerful editor with extensive formatting capabilities, user authentication, and real-time interactions.
 
 ### Key Features
 
@@ -27,34 +27,40 @@ BrainOut is a web application designed for users to create, edit, and collaborat
 ## 🏗️ Project Structure
 
 ```
-BrainOut/
-├── BrainOut-backend/          # Express.js backend API server
+Stashly/
+├── backend/                   # Express.js backend API server
 │   ├── src/
-│   │   ├── config.ts          # Configuration management
-│   │   ├── index.ts           # Server entry point
-│   │   ├── db/                # Database configuration
-│   │   ├── routes/            # API route handlers
-│   │   ├── middlewares/       # Express middlewares
-│   │   ├── types/             # TypeScript type definitions
-│   │   └── utils.ts           # Utility functions
-│   ├── .env.example           # Environment variables template
+│   │   ├── config.ts         # Configuration management
+│   │   ├── index.ts         # Server entry point
+│   │   ├── db/              # Database configuration
+│   │   ├── routes/          # API route handlers
+│   │   ├── middlewares/     # Express middlewares
+│   │   ├── types/         # TypeScript type definitions
+│   │   └── utils.ts        # Utility functions
+│   ├── .env.example        # Environment variables template
 │   └── package.json
 │
-├── BrainOut-frontend/         # React + Vite frontend application
+├── frontend/                 # React + Vite frontend application
 │   ├── src/
-│   │   ├── components/        # Reusable React components
-│   │   │   ├── tiptap-*       # Tiptap editor related components
-│   │   │   └── ui/            # UI components
-│   │   ├── features/          # Redux slices (AlertSlice, FormSlice, UserSlice)
-│   │   ├── hooks/             # Custom React hooks
-│   │   ├── lib/               # Utility libraries
-│   │   ├── Helper/            # Helper functions (embeddings, URL detection)
-│   │   ├── App.tsx            # Main app component
-│   │   └── main.tsx           # React entry point
-│   ├── tailwind.config.ts     # TailwindCSS configuration
+│   │   ├── app/            # App components
+│   │   ├── components/     # Reusable React components
+│   │   │   ├── tiptap-*   # Tiptap editor related components
+│   │   │   └── ui/        # UI components
+│   │   ├── features/       # Redux slices (AlertSlice, FormSlice, UserSlice)
+│   │   ├── hooks/         # Custom React hooks
+│   │   ├── lib/          # Utility libraries
+│   │   ├── Helper/       # Helper functions (embeddings, URL detection)
+│   │   ├── pages/        # Page components
+│   │   ├── icons/       # Icon components
+│   │   ├── styles/     # Global styles
+│   │   ├── assets/     # Static assets
+│   │   ├── App.tsx     # Main app component
+│   │   └── main.tsx    # React entry point
+│   ├── tailwind.config.ts  # TailwindCSS configuration
 │   └── package.json
 │
-└── README.md                  # This file
+├── README.md                 # This file
+└── plan.md                  # Project plan
 ```
 
 ## 🚀 Getting Started
@@ -70,14 +76,14 @@ BrainOut/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/BrainOut.git
-   cd BrainOut
+   git clone https://github.com/yourusername/Stashly.git
+   cd Stashly
    ```
 
 2. **Backend Setup**
 
    ```bash
-   cd BrainOut-backend
+   cd backend
    npm install
    cp .env.example .env
    # Edit .env with your MongoDB connection string and other credentials
@@ -86,7 +92,7 @@ BrainOut/
 
 3. **Frontend Setup** (in a new terminal)
    ```bash
-   cd BrainOut-frontend
+   cd frontend
    npm install
    npm run dev
    ```
@@ -95,11 +101,11 @@ BrainOut/
 
 #### Backend (.env)
 
-Create a `.env` file in `BrainOut-backend/` with:
+Create a `.env` file in `backend/` with:
 
 ```env
 # MongoDB Connection String
-DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/brainout
+DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/stashly
 
 # Server Port
 PORT=3000
@@ -111,7 +117,7 @@ USER_SECRET_KEY=your-secret-key-here
 SALTROUND=10
 ```
 
-See [.env.example](./BrainOut-backend/.env.example) for reference.
+See [.env.example](./backend/.env.example) for reference.
 
 ## 📦 Tech Stack
 
