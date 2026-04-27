@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { store } from "./app/store";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { HashRouter, Navigate, Route, Routes } from "react-router";
 
 import { ProtectedLayout } from "@/components/layout/protected-layout";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -15,7 +15,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<SignUpPage />} />
@@ -65,7 +65,7 @@ function App() {
               <Route path="text-editor" element={<EditorPage />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
         <ToastContainer position="bottom-right" />
       </ThemeProvider>
     </Provider>
