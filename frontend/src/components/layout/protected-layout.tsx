@@ -31,7 +31,7 @@ export function ProtectedLayout() {
         <div className="flex min-h-screen min-w-0 flex-1 flex-col">
           <AppHeader />
 
-          <div className="border-b border-border/60 px-4 py-3 lg:hidden">
+          <div className="border-b border-border/60 px-4 py-2 lg:hidden">
             <div className="flex items-center gap-2 overflow-x-auto">
               {mobileNavItems.map((item) => (
                 <NavLink
@@ -39,7 +39,7 @@ export function ProtectedLayout() {
                   to={item.to}
                   className={({ isActive }) =>
                     cn(
-                      "shrink-0 rounded-full px-3 py-1.5 text-sm font-medium",
+                      "shrink-0 rounded-full px-3 py-1 text-sm font-medium",
                       isActive
                         ? "bg-primary text-primary-foreground"
                         : "bg-secondary text-secondary-foreground",
