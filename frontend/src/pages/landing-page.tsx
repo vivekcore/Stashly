@@ -77,15 +77,15 @@ export default function LandingPage() {
         />
       </div>
 
-      <header className="relative z-10 px-4 pt-4">
+      <header className="relative  z-10 px-4 pt-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/80 bg-card/90 px-4 py-3">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10">
               <img src={Logo} alt="Stashly logo" className="h-5 w-5" width={20} height={20} />
             </div>
             <div>
-              <p className="text-sm font-semibold tracking-tight">Stashly</p>
-              <p className="text-xs text-muted-foreground">Save and organize useful content</p>
+              <p className="sm:text-sm text-base font-semibold tracking-tight">Stashly</p>
+              <p className="text-xs hidden sm:block  text-muted-foreground">Save and organize useful content</p>
             </div>
           </div>
 

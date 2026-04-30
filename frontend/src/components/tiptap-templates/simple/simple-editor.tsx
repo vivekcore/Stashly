@@ -240,10 +240,11 @@ export function SimpleEditor() {
   }, [isMobile, mobileView]);
 
   return (
-    <div className="bg-background">
+    <div>
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
-          className="h-15 px-10"
+        variant="floating"
+          className="h-15 px-10 "
           ref={toolbarRef}
           style={{
             ...(isMobile

@@ -4,6 +4,7 @@ import { useAppDispatch } from "@/app/hooks";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { toggle } from "@/features/FormSlice";
+import { toggle as logoutAleart } from "@/features/AlertSlice";
 import { cn } from "@/lib/utils";
 export function AppHeader() {
   const dispatch = useAppDispatch();
@@ -91,7 +92,7 @@ export function AppHeader() {
             Top
           </button>
           <button
-            onClick={() => dispatch(toggle())}
+            onClick={() => dispatch(logoutAleart())}
             className="bg-primary-foreground rounded-2xl border px-3 py-1 text-sm font-medium"
           >
             <LogOut size={18} />

@@ -96,7 +96,7 @@ export function AddContentDialog() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 p-4 backdrop-blur-sm">
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-2xl  ">
         <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
           <div className="space-y-1">
             <CardTitle>Add content</CardTitle>
@@ -110,7 +110,7 @@ export function AddContentDialog() {
         </CardHeader>
 
         <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-2 sm:space-y-4" onSubmit={handleSubmit}>
             <Field label="Title" required>
               <Input
                 value={title}
@@ -130,7 +130,7 @@ export function AddContentDialog() {
               />
             </Field>
 
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid sm:gap-4 gap-2 md:grid-cols-2">
               <Field label="Link type" required>
                 <select
                   className="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -164,6 +164,7 @@ export function AddContentDialog() {
 
             <Field label="Description">
               <Textarea
+                className="min-h-8 pb-0 sm:min-h-24 "
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 placeholder="Short summary or note"
