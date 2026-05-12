@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import getConfig from "./utils/config.js";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
+import rootRouter from "./routes/index.js"
 import { ConnectDB } from "./db/db.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
@@ -11,8 +12,9 @@ const env = getConfig();
 app.use(cors());
 app.use(express.json());
 app.use("/user", userRouter);
+app.use("/api/v1",rootRouter)
 app.listen(env.PORT, async () => {
   ConnectDB();
-  //app.use(errorHandler);
+  app.use(errorHandler);
   console.log(`Server Listning at port ${env.PORT}`);
 });
