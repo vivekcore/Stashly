@@ -15,6 +15,10 @@ const User = new Schema({
   },
   password: { type: String, required: true, minLength: 8 },
   email: { type: String, required: true, unique: true },
-});
+},
+{
+  timestamps:true
+}
+);
 
 export const userModel = model<IUser>("users", User);
