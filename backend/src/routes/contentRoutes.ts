@@ -8,5 +8,5 @@ router.post("/add",UserAuth,contentController.addContent);
 router.get("/my",UserAuth,contentController.getMyContent);
 router.get("/websitetype",UserAuth,contentController.getContentWithWebsiteType);
 router.delete("/My",UserAuth,contentController.deleteContent);
-
+router.get("/:slug",contentController.shareContent)
 export default router;

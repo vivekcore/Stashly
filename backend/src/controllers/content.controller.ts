@@ -63,4 +63,15 @@ export const contentController = {
       });
     },
   ),
+  shareContent: catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const slug = req.params.slug as string;
+      const response =await contenetServices.shareContent(slug);
+      res.status(200).json({
+        status: "sucess",
+        message: "Link found",
+        data: response,
+      });
+    },
+  ),
 };

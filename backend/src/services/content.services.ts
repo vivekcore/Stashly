@@ -1,14 +1,14 @@
 import mongoose, { Mongoose, Types } from "mongoose";
 import {
   contentModel,
-  contentTypes,
+  ContentFilter,
   websiteTypes,
 } from "../models/contentModel.js";
 import ApiError from "../utils/apiError.js";
 
 export interface IaddContent {
   link: string;
-  type: contentTypes;
+  type: ContentFilter;
   slug: string;
   title: string;
   description?: string;
@@ -19,7 +19,7 @@ export interface IContentResponse {
   id: string;
   website: websiteTypes;
   slug: string;
-  type: contentTypes;
+  type: ContentFilter;
   title: string;
   description?: string;
   tags?: string[];
@@ -146,7 +146,17 @@ class ContentServices {
       throw new ApiError(400, JSON.stringify(error));
     }
   }
+  async shareContent(slug:string):Promise<IContentResponse>{
 
+    const content = await contentModel.findOne({
+      slug: slug.toLowerCase().trim()
+    }).populate('userId','email username')
+    if(!content){
+      throw new ApiError(400,"Link does not exist");
+    }
+    const contentResponse = this.toContentResponse(content);
+    return contentResponse;
+  }
   private async generateSlug(title: string): Promise<string> {
     let slug = title
       .toLowerCase()
