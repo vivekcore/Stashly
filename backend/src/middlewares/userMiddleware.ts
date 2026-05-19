@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { string, z } from "zod";
 import jwt from "jsonwebtoken";
 import getConfig from "../utils/config.js";
+import mongoose from "mongoose";
 const env = getConfig();
 export const Uservalidation = (
   req: Request,
@@ -38,7 +39,7 @@ export const UserAuth = (req: Request, res: Response, next: NextFunction) => {
     const result = jwt.verify(token as string, env.USER_SECRET_KEY);
     
     //@ts-ignore
-    req.userId = result.userId;
+    req.userId = new mongoose.Types.ObjectId(result.userId) ;
     next();
   } catch (error) {
     res.status(401).json({

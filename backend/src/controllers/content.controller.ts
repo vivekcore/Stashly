@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync.js";
 import { contenetServices, IaddContent } from "../services/content.services.js";
+import { websiteTypes } from "../models/contentModel.js";
 
 export const contentController = {
   addContent: catchAsync(
@@ -33,7 +34,13 @@ export const contentController = {
   getContentWithWebsiteType: catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       const userId = req.userId;
-      const websiteType = req.query.websiteType?.toString() || "";
+      const requestedWebsiteType =
+        req.query.websiteType?.toString() || websiteTypes.OTHER;
+      const websiteType = Object.values(websiteTypes).includes(
+        requestedWebsiteType as websiteTypes,
+      )
+        ? (requestedWebsiteType as websiteTypes)
+        : websiteTypes.OTHER;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const response = await contenetServices.getContentWithWebsiteType(
