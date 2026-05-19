@@ -63,6 +63,7 @@ out/
 # Node
 package-lock.json
 yarn.lock
+!backend/package-lock.json
 plan.md
 # Testing
 .mocha_output

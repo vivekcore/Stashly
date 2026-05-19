@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Types } from "mongoose";
+import mongoose from "mongoose";
 import {
   contentModel,
   ContentFilter,
@@ -95,7 +95,7 @@ class ContentServices {
 
   async getContentWithWebsiteType(
     userId: mongoose.Types.ObjectId,
-    website: string,
+    website: websiteTypes,
     page: number,
     limit: number,
   ): Promise<IContentListResponse> {
@@ -130,7 +130,7 @@ class ContentServices {
     contentId: string,
   ): Promise<{contentId:string}> {
     try {
-      const content = await contentModel.findByIdAndDelete(contentId);
+      const content = await contentModel.findByIdAndDelete(new mongoose.Types.ObjectId(contentId));
       if (!content) {
         throw new ApiError(400, "Content does not exist");
       }
