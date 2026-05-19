@@ -1,8 +1,6 @@
 import mongoose, { connect } from "mongoose";
 import { Types } from "mongoose";
 import getConfig from "../utils/config.js";
-export const contentTypes = ["image", "video", "article", "audio"];
-
 const env = getConfig();
 
 export async function ConnectDB() {

@@ -1,6 +1,6 @@
-import mongoose, { InferSchemaType, Schema, model, Document } from "mongoose";
+import mongoose, {  Schema, model, Document } from "mongoose";
 
-export enum contentTypes {
+export enum ContentFilter {
   IMAGE = "image",
   VIDEO = "video",
   ARTICLE = "article",
@@ -16,7 +16,7 @@ export interface Icontent extends Document {
   link: string;
   website: websiteTypes;
   slug: string;
-  type: contentTypes;
+  type: ContentFilter;
   title: string;
   description: string;
   tags: string[];
@@ -35,9 +35,9 @@ const ContentSchema = new Schema<Icontent>({
   slug: { type: String },
   type: {
     type: String,
-    enum: Object.values(contentTypes),
+    enum: Object.values(ContentFilter),
     required: true,
-    default: contentTypes.ARTICLE,
+    default: ContentFilter.ARTICLE,
   },
   title: { type: String, required: true },
   description: { type: String },
