@@ -36,6 +36,7 @@ export const UserAuth = (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     const result = jwt.verify(token as string, env.USER_SECRET_KEY);
+    
     //@ts-ignore
     req.userId = result.userId;
     next();

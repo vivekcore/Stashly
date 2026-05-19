@@ -1,29 +1,35 @@
-export type ContentKind =
-  | "twitter"
-  | "youtube"
-  | "linkedin"
-  | "image"
-  | "video"
-  | "article"
-  | "audio";
+export type ContentType = "image" | "video" | "article" | "audio";
 
-export type ContentFilter = "Other" | "Twitter" | "Youtube" | "Linkedin";
+export type ContentWebsite = "youtube" | "twitter" | "linkedin" | "other";
+
+export type ContentFilter = "all" | ContentWebsite;
+
+export interface ContentUser {
+  id: string;
+  name: string;
+  email: string;
+}
 
 export interface ContentItem {
-  _id: string;
+  id: string;
   title: string;
   link: string;
-  linkType: ContentFilter;
-  type: ContentKind;
-  tags?: string[];
+  website: ContentWebsite;
+  slug: string;
+  type: ContentType;
+  tags: string[];
   description?: string;
+  user: ContentUser;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface NewContentPayload {
   title: string;
   link: string;
-  linkType: ContentFilter;
-  type: Extract<ContentKind, "image" | "video" | "article" | "audio">;
+  website: ContentWebsite;
+  slug?: string;
+  type: ContentType;
   description: string;
   tags: string[];
 }
