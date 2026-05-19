@@ -17,6 +17,7 @@ export interface IaddContent {
 }
 export interface IContentResponse {
   id: string;
+  link: string;
   website: websiteTypes;
   slug: string;
   type: ContentFilter;
@@ -77,9 +78,6 @@ class ContentServices {
           .limit(limit),
         contentModel.countDocuments({ userId }),
       ]);
-      if (content.length == 0) {
-        throw new ApiError(400, "Content not found");
-      }
       const contentResponse = content.map((c) => this.toContentResponse(c));
       return {
         content: contentResponse,
@@ -102,7 +100,6 @@ class ContentServices {
     limit: number,
   ): Promise<IContentListResponse> {
     try {
-      console.log(website)
       const skip = (page - 1) * limit;
       const [content, total] = await Promise.all([
         contentModel
@@ -179,10 +176,11 @@ class ContentServices {
   private toContentResponse(content: any): IContentResponse {
     return {
       id: content._id.toString(),
+      link: content.link,
       website: content.website,
       slug: content.slug,
       type: content.type,
-      title: content.type,
+      title: content.title,
       description: content.description || "",
       tags: content.tags || [],
       user: {
