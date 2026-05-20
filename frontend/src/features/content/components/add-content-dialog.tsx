@@ -20,7 +20,6 @@ import type {
   ContentWebsite,
 } from "@/features/content/types";
 import { contentSaved, setOpen } from "@/features/content/store/content-dialog-slice";
-import { getToken } from "@/shared/lib/session";
 
 const contentTypes: ContentType[] = ["image", "video", "article", "audio"];
 const websiteTypes: ContentWebsite[] = ["other", "twitter", "youtube", "linkedin"];
@@ -66,16 +65,10 @@ export function AddContentDialog() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const token = getToken();
-
-    if (!token) {
-      return;
-    }
-
     setIsSaving(true);
 
     try {
-      await createContentItem(token, {
+      await createContentItem({
         title: title.trim(),
         link: link.trim(),
         website,

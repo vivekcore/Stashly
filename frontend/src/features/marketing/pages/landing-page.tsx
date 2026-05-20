@@ -15,7 +15,7 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
-import { getToken } from "@/shared/lib/session";
+import { authClient } from "@/lib/auth-client";
 
 const benefits = [
   "Save links from the sources you already browse.",
@@ -49,7 +49,7 @@ const features: Array<{
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const token = getToken();
+  const { data: session } = authClient.useSession();
   const { theme } = useTheme();
 
   const isDark =
@@ -57,8 +57,8 @@ export default function LandingPage() {
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  const openPrimary = () => navigate(token ? "/home/dashboard" : "/signin");
-  const openSecondary = () => navigate("/signup");
+  const openPrimary = () => navigate(session ? "/home/dashboard" : "/auth");
+  const openSecondary = () => navigate("/auth?mode=signup");
 
   return (
     <div className="landing-page relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -96,7 +96,7 @@ export default function LandingPage() {
               className="cursor-pointer rounded-full px-4"
               onClick={openPrimary}
             >
-              {token ? "Open app" : "Get started"}
+              {session ? "Open app" : "Get started"}
             </Button>
           </div>
         </div>
@@ -130,7 +130,7 @@ export default function LandingPage() {
                 className="cursor-pointer rounded-full px-6"
                 onClick={openPrimary}
               >
-                {token ? "Open dashboard" : "Start saving"}
+                {session ? "Open dashboard" : "Start saving"}
                 <ArrowRight size={16} />
               </Button>
               <Button
@@ -252,7 +252,7 @@ export default function LandingPage() {
                     className="cursor-pointer rounded-full px-6"
                     onClick={openPrimary}
                   >
-                    {token ? "Go to dashboard" : "Create your workspace"}
+                    {session ? "Go to dashboard" : "Create your workspace"}
                     <ArrowRight size={16} />
                   </Button>
                   <Button
