@@ -30,18 +30,6 @@ export const errorHandler = (
     message = 'Invalid ID format. Please check the ID and try again.';
   }
 
-  // Json web token error
-  if (err.name === 'JsonWebTokenError') {
-    statusCode = 401;
-    message = 'Invalid token. Please login again.';
-  }
-
-  // Token expired error
-  if (err.name === 'TokenExpiredError') {
-    statusCode = 401;
-    message = 'Session expired. Please login again.';
-  }
-
   res.status(statusCode).json({
     success: false,
     message,

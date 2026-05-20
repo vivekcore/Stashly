@@ -55,7 +55,7 @@ class ContentServices {
       });
       const populatedContent = await contentModel
         .findById(content._id)
-        .populate("userId", "username email");
+        .populate("userId", "name email");
       return this.toContentResponse(populatedContent!);
     } catch (error) {
       throw new ApiError(400, JSON.stringify(error));
@@ -72,7 +72,7 @@ class ContentServices {
       const [content, total] = await Promise.all([
         contentModel
           .find({ userId })
-          .populate("userId", "username email")
+          .populate("userId", "name email")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit),
@@ -104,7 +104,7 @@ class ContentServices {
       const [content, total] = await Promise.all([
         contentModel
           .find({ userId , website})
-          .populate("userId", "username email")
+          .populate("userId", "name email")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit),
@@ -147,7 +147,7 @@ class ContentServices {
 
     const content = await contentModel.findOne({
       slug: slug.toLowerCase().trim()
-    }).populate('userId','email username')
+    }).populate('userId','email name')
     if(!content){
       throw new ApiError(400,"Link does not exist");
     }
@@ -185,7 +185,7 @@ class ContentServices {
       tags: content.tags || [],
       user: {
         id: content.userId._id.toString(),
-        name: content.userId.username,
+        name: content.userId.name,
         email: content.userId.email,
       },
       createdAt: content.createdAt,
