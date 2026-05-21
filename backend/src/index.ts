@@ -1,10 +1,13 @@
 import express, { Application } from "express";
 import cors from "cors";
-import rootRouter from "./routes/index.js"
+import rootRouter from "./routes/index.js";
 import { ConnectDB } from "./db/db.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { getAuth } from "./auth/auth.js";
 import { toNodeHandler } from "better-auth/node";
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const app: Application = express();
 
@@ -13,6 +16,8 @@ const startServer = async () => {
     await ConnectDB();
     const auth = getAuth();
     console.log("DB connected");
+
+    app.set("trust proxy", true);
 
     const allowedOrigins = [
       "http://localhost:5173",
@@ -33,6 +38,10 @@ const startServer = async () => {
     // 2. Body parsers and other routes
     app.use(express.json());
     app.use("/api/v1", rootRouter);
+
+    app.get("/", (req, res) => {
+      res.json({ message: "Stashly API is running" });
+    });
 
     // 3. Error handler should be last
     app.use(errorHandler);

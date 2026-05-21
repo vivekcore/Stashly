@@ -1,23 +1,23 @@
 import {Schema,Document,model} from "mongoose";
 
 export interface IUser extends Document{
-  username:string,
-  password:string,
+  name:string,
   email:string,
+  emailVerified:boolean,
+  image:string,
+  createdAt:Date,
+  updatedAt:Date,
 }
 const User = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    minLength: 3,
-    maxLength: 20,
-  },
-  password: { type: String, required: true, minLength: 8 },
-  email: { type: String, required: true, unique: true },
+  name: {type:String,require:true},
+  email:{type:String,require:true},
+  emailVerified:{type:Boolean, default:false},
+  image:{type:String}
 },
 {
-  timestamps:true
+  timestamps:true,
+  strict:false,
+  collection:'users'
 }
 );
 

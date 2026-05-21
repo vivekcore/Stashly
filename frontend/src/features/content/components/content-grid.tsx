@@ -15,7 +15,6 @@ import { deleteContentItem, fetchContentItems } from "@/features/content/api/con
 import { ContentCard } from "@/features/content/components/content-card";
 import type { ContentFilter, ContentItem } from "@/features/content/types";
 import { toggle } from "@/features/content/store/content-dialog-slice";
-import { getToken } from "@/shared/lib/session";
 
 interface ContentGridProps {
   websiteFilter: ContentFilter;
@@ -29,16 +28,6 @@ export function ContentGrid({ websiteFilter }: ContentGridProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedToken = getToken();
-
-    if (!storedToken) {
-      setItems([]);
-      setIsLoading(false);
-      return;
-    }
-
-    const token = storedToken;
-
     let isMounted = true;
 
     async function loadItems() {
@@ -46,7 +35,7 @@ export function ContentGrid({ websiteFilter }: ContentGridProps) {
       setError(null);
 
       try {
-        const response = await fetchContentItems(token, websiteFilter);
+        const response = await fetchContentItems(websiteFilter);
         if (isMounted) {
           setItems(response);
         }
@@ -69,12 +58,7 @@ export function ContentGrid({ websiteFilter }: ContentGridProps) {
   }, [refreshKey, websiteFilter]);
 
   const handleDelete = async (id: string) => {
-    const token = getToken();
-    if (!token) {
-      return;
-    }
-
-    await deleteContentItem(token, id);
+    await deleteContentItem(id);
     setItems((current) => current.filter((item) => item.id !== id));
     toast.success("Content deleted successfully.");
   };

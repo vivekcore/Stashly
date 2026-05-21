@@ -48,17 +48,28 @@ class ContentServices {
     userId: mongoose.Types.ObjectId,
   ): Promise<IContentResponse> {
     try {
+      const slug = data.slug && data.slug.trim() !== "" 
+        ? data.slug 
+        : await this.generateSlug(data.title);
+
       const content = await contentModel.create({
         ...data,
         userId,
-        slug: data.slug || (await this.generateSlug(data.title)).toString(),
+        slug,
       });
+
       const populatedContent = await contentModel
         .findById(content._id)
-        .populate("userId", "username email");
-      return this.toContentResponse(populatedContent!);
+        .populate("userId", "name email");
+
+      if (!populatedContent) {
+        throw new ApiError(500, "Failed to retrieve content after creation");
+      }
+
+      return this.toContentResponse(populatedContent);
     } catch (error) {
-      throw new ApiError(400, JSON.stringify(error));
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(400, error instanceof Error ? error.message : "Failed to add content");
     }
   }
 
@@ -72,7 +83,7 @@ class ContentServices {
       const [content, total] = await Promise.all([
         contentModel
           .find({ userId })
-          .populate("userId", "username email")
+          .populate("userId", "name email")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit),
@@ -89,7 +100,7 @@ class ContentServices {
         },
       };
     } catch (error) {
-      throw new ApiError(400, JSON.stringify(error));
+      throw new ApiError(400, error instanceof Error ? error.message : "Failed to fetch content");
     }
   }
 
@@ -104,7 +115,7 @@ class ContentServices {
       const [content, total] = await Promise.all([
         contentModel
           .find({ userId , website})
-          .populate("userId", "username email")
+          .populate("userId", "name email")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit),
@@ -121,7 +132,7 @@ class ContentServices {
         },
       };
     } catch (error) {
-      throw new ApiError(400, JSON.stringify(error));
+      throw new ApiError(400, error instanceof Error ? error.message : "Failed to fetch content by type");
     }
   }
 
@@ -130,9 +141,13 @@ class ContentServices {
     contentId: string,
   ): Promise<{contentId:string}> {
     try {
-      const content = await contentModel.findByIdAndDelete(new mongoose.Types.ObjectId(contentId));
+      const content = await contentModel.findOneAndDelete({
+        _id: new mongoose.Types.ObjectId(contentId),
+        userId: userId
+      });
+
       if (!content) {
-        throw new ApiError(400, "Content does not exist");
+        throw new ApiError(400, "Content does not exist or you don't have permission to delete it");
       }
 
       return{
@@ -140,39 +155,47 @@ class ContentServices {
       }
        
     } catch (error) {
-      throw new ApiError(400, JSON.stringify(error));
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(400, error instanceof Error ? error.message : "Failed to delete content");
     }
   }
-  async shareContent(slug:string):Promise<IContentResponse>{
 
-    const content = await contentModel.findOne({
-      slug: slug.toLowerCase().trim()
-    }).populate('userId','email username')
-    if(!content){
-      throw new ApiError(400,"Link does not exist");
+  async shareContent(slug:string):Promise<IContentResponse>{
+    try {
+      const content = await contentModel.findOne({
+        slug: slug.toLowerCase().trim()
+      }).populate('userId','email name')
+
+      if(!content){
+        throw new ApiError(404, "Content not found");
+      }
+
+      return this.toContentResponse(content);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(400, error instanceof Error ? error.message : "Failed to share content");
     }
-    const contentResponse = this.toContentResponse(content);
-    return contentResponse;
   }
+
   private async generateSlug(title: string): Promise<string> {
-    let slug = title
+    const baseSlug = title
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/[\s_-]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+      .replace(/^-+|-+$/g, "") || "content";
 
-    let finalSlug = slug;
+    let finalSlug = baseSlug;
     let counter = 1;
-    while (true) {
-      const existingslug = await contentModel.findOne({ slug: finalSlug });
-      if (!existingslug) {
-        return finalSlug;
-      }
-      finalSlug = finalSlug + "-" + counter.toString();
+    
+    while (await contentModel.findOne({ slug: finalSlug })) {
+      finalSlug = `${baseSlug}-${counter}`;
       counter++;
     }
+    
+    return finalSlug;
   }
+
   private toContentResponse(content: any): IContentResponse {
     return {
       id: content._id.toString(),
@@ -185,7 +208,7 @@ class ContentServices {
       tags: content.tags || [],
       user: {
         id: content.userId._id.toString(),
-        name: content.userId.username,
+        name: content.userId.name,
         email: content.userId.email,
       },
       createdAt: content.createdAt,
@@ -194,4 +217,5 @@ class ContentServices {
   }
 }
 
-export const contenetServices = new ContentServices();
+export const contentServices = new ContentServices();
+

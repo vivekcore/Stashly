@@ -9,8 +9,7 @@ import ContentPage from "@/features/content/pages/content-page";
 import EditorPage from "@/features/editor/pages/editor-page";
 import LandingPage from "@/features/marketing/pages/landing-page";
 import SharedContentPage from "@/features/content/pages/shared-content-page";
-import SignInPage from "@/features/auth/pages/sign-in-page";
-import SignUpPage from "@/features/auth/pages/sign-up-page";
+import AuthPage from "@/features/auth/pages/auth-page";
 
 function AppRouter() {
   return (
@@ -19,8 +18,7 @@ function AppRouter() {
         <HashRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/auth" element={<AuthPage />} />
             <Route path="/shared/:slug" element={<SharedContentPage />} />
             <Route path="/home" element={<ProtectedLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />

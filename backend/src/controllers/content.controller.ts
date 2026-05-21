@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync.js";
-import { contenetServices, IaddContent } from "../services/content.services.js";
+import { contentServices, IaddContent } from "../services/content.services.js";
 import { websiteTypes } from "../models/contentModel.js";
 
 export const contentController = {
   addContent: catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       const data: IaddContent = req.body;
-      const response = await contenetServices.addContent(data, req.userId);
+      const response = await contentServices.addContent(data, req.userId);
 
       res.status(200).json({
-        status: "sucess",
-        message: "content added sucessfully",
+        status: "success",
+        message: "content added successfully",
         data: response,
       });
     },
@@ -22,9 +22,9 @@ export const contentController = {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const userId = req.userId;
-      const response = await contenetServices.getMyContent(userId, page, limit);
+      const response = await contentServices.getMyContent(userId, page, limit);
       res.status(200).json({
-        status: "sucess",
+        status: "success",
         message: "My saved content",
         data: response,
       });
@@ -43,14 +43,14 @@ export const contentController = {
         : websiteTypes.OTHER;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
-      const response = await contenetServices.getContentWithWebsiteType(
+      const response = await contentServices.getContentWithWebsiteType(
         userId,
         websiteType,
         page,
         limit,
       );
       res.status(200).json({
-        status: "sucess",
+        status: "success",
         message: "Fetched Documents",
         data: response,
       });
@@ -61,11 +61,11 @@ export const contentController = {
     async (req: Request, res: Response, next: NextFunction) => {
       const userId = req.userId;
       const contentId = req.body.contentId;
-      const response = await contenetServices.deleteContent(userId, contentId);
+      const response = await contentServices.deleteContent(userId, contentId);
 
       res.status(200).json({
-        status: "sucess",
-        message: "Contentent deleted sucessfully",
+        status: "success",
+        message: "Content deleted successfully",
         data: response,
       });
     },
@@ -73,9 +73,9 @@ export const contentController = {
   shareContent: catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       const slug = req.params.slug as string;
-      const response =await contenetServices.shareContent(slug);
+      const response =await contentServices.shareContent(slug);
       res.status(200).json({
-        status: "sucess",
+        status: "success",
         message: "Link found",
         data: response,
       });

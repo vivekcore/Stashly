@@ -1,9 +1,5 @@
-import Router from "express"
-import { userController } from "../controllers/user.controller.js";
-import {UserAuth} from "../middlewares/userMiddleware.js"
-const router = Router();
+import Router from "express";
 
-router.post('/signup',userController.signUp);
-router.post('/signin',userController.signIn);
+const router = Router();
 
 export default router;

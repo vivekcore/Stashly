@@ -12,7 +12,7 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
     const db = mongoose.connection.db as Db;
     if (!db) throw new Error("DB not connected yet. Call ConnectDB() first.");
 
-    const backendUrl =  process.env.BACKEND_URL || "http://localhost:3000";
+    const backendUrl = process.env.BETTER_AUTH_URL || process.env.BACKEND_URL || "http://localhost:3000";
     console.log("Initializing Better Auth with baseURL:", backendUrl);
 
     authInstance = betterAuth<BetterAuthOptions>({

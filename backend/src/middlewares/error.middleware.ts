@@ -1,13 +1,16 @@
 
 import type{ Request, Response, NextFunction } from 'express';
-
 export const errorHandler = (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  console.error("Error encountered:", err);
+
   let statusCode = err.statusCode || 500;
+  //...
+
   let message = err.message || 'Something went wrong. Please try again later.';
 
   // Mongoose duplicate key error
@@ -28,18 +31,6 @@ export const errorHandler = (
   if (err.name === 'CastError') {
     statusCode = 400;
     message = 'Invalid ID format. Please check the ID and try again.';
-  }
-
-  // Json web token error
-  if (err.name === 'JsonWebTokenError') {
-    statusCode = 401;
-    message = 'Invalid token. Please login again.';
-  }
-
-  // Token expired error
-  if (err.name === 'TokenExpiredError') {
-    statusCode = 401;
-    message = 'Session expired. Please login again.';
   }
 
   res.status(statusCode).json({
