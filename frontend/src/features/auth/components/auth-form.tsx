@@ -57,7 +57,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const locationState = location.state as {
     from?: { pathname?: string };
   } | null;
-  const redirectTo = locationState?.from?.pathname ?? "/home/dashboard";
+  const redirectTo = locationState?.from?.pathname ?? "/#/home/dashboard";
 
   useEffect(() => {
     if (!session?.user) {

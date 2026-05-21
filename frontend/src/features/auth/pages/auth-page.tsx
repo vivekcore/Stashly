@@ -62,7 +62,7 @@ export default function AuthPage() {
               <img src={Logo} alt="Stashly Logo" className="h-6 w-6 object-contain" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold tracking-tight bg-linear-to-b from-foreground to-foreground/80">
+              <h2 className="text-3xl font-bold tracking-tight  ">
                 Stashly
               </h2>
               <p className="text-xs text-muted-foreground">
