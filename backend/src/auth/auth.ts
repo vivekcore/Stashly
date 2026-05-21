@@ -12,10 +12,7 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
     const db = mongoose.connection.db as Db;
     if (!db) throw new Error("DB not connected yet. Call ConnectDB() first.");
 
-    const backendUrl = process.env.BETTER_AUTH_URL || 
-                       process.env.BACKEND_URL || 
-                       process.env.RENDER_EXTERNAL_URL || 
-                       "http://localhost:3000";
+    const backendUrl = process.env.BACKEND_URL as string;
     
     console.log("Initializing Better Auth with baseURL:", backendUrl);
 
@@ -35,14 +32,7 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
           clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         },
       },
-      trustedOrigins: [
-        "http://localhost:5173",
-        process.env.FRONTEND_URL as string,
-        backendUrl
-      ].filter(Boolean),
-      advanced: {
-        cookiePrefix: "stashly",
-      }
+      trustedOrigins:[process.env.FRONTEND_URL as string],
     });
   }
   return authInstance;

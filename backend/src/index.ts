@@ -5,7 +5,7 @@ import { ConnectDB } from "./db/db.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { getAuth } from "./auth/auth.js";
 import { toNodeHandler } from "better-auth/node";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -17,33 +17,19 @@ const startServer = async () => {
     const auth = getAuth();
     console.log("DB connected");
 
-    app.set("trust proxy", true);
-
-    const allowedOrigins = [
-      "http://localhost:5173",
-      process.env.FRONTEND_URL
-    ].filter(Boolean) as string[];
-
     app.use(
       cors({
-        origin: allowedOrigins,
+        origin: "http://localhost:5173",
         credentials: true,
       }),
     );
 
-    // 1. Better Auth handler must come BEFORE express.json() for Express 5
-    //  *splat for Express 5 wildcard support
     app.all("/api/v1/auth/*splat", toNodeHandler(auth));
 
-    // 2. Body parsers and other routes
     app.use(express.json());
     app.use("/api/v1", rootRouter);
 
-    app.get("/", (req, res) => {
-      res.json({ message: "Stashly API is running" });
-    });
 
-    // 3. Error handler should be last
     app.use(errorHandler);
 
     const port = process.env.PORT || 3000;

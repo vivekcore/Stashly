@@ -22,8 +22,8 @@ export default function AuthPage() {
       {/* Background visual effects */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         {/* Soft colorful glow blobs */}
-        <div className="absolute top-[10%] left-[15%] h-80 w-80 rounded-full bg-violet-600/10 blur-[100px] dark:bg-violet-500/8 animate-pulse duration-[6000ms]" />
-        <div className="absolute bottom-[15%] right-[15%] h-96 w-96 rounded-full bg-cyan-600/10 blur-[120px] dark:bg-cyan-500/8 animate-pulse duration-[8000ms] [animation-delay:2s]" />
+        <div className="absolute top-[10%] left-[15%] h-80 w-80 rounded-full bg-violet-600/10 blur-[100px] dark:bg-violet-500/8 animate-pulse duration-6000" />
+        <div className="absolute bottom-[15%] right-[15%] h-96 w-96 rounded-full bg-cyan-600/10 blur-[120px] dark:bg-cyan-500/8 animate-pulse duration-8000 [animation-delay:2s]" />
 
         {/* Ambient radial overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.8)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)]" />
