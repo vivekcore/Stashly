@@ -11,6 +11,7 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
   if (!authInstance) {
     const db = mongoose.connection.db as Db;
     if (!db) throw new Error("DB not connected yet. Call ConnectDB() first.");
+    const isProd = process.env.NODE_ENV === "production";
 
     authInstance = betterAuth<BetterAuthOptions>({
       database: mongodbAdapter(db, { usePlural: true }),
@@ -35,16 +36,16 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
       advanced: {
         crossSubDomainCookies: {
           enabled: true,
-          domain: isProduction ? "vercel.app" : "localhost",
+          domain: isProd ? "undefined" : "localhost",
         },
         defaultCookieAttributes: {
-          sameSite: isProduction? "none" : "lax",
-          secure: isProduction,
+          sameSite: isProd? "none" : "lax",
+          secure: isProd,
           httpOnly: true,
         },
       },
       account: {
-        skipStateCookieCheck: true,
+        skipStateCookieCheck: false,
       },
     });
   }
