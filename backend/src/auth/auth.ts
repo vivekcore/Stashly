@@ -12,14 +12,10 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
     const db = mongoose.connection.db as Db;
     if (!db) throw new Error("DB not connected yet. Call ConnectDB() first.");
 
-    const backendUrl = process.env.BACKEND_URL as string;
-    
-    console.log("Initializing Better Auth with baseURL:", backendUrl);
-
     authInstance = betterAuth<BetterAuthOptions>({
-      database: mongodbAdapter(db,{usePlural:true}),
+      database: mongodbAdapter(db, { usePlural: true }),
       secret: process.env.BETTER_AUTH_SECRET,
-      baseURL: backendUrl,
+      baseURL: process.env.BACKEND_URL,
       basePath: "/api/v1/auth",
 
       socialProviders: {
@@ -32,7 +28,24 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
           clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         },
       },
-      trustedOrigins:[process.env.FRONTEND_URL as string],
+      trustedOrigins: [
+        process.env.FRONTEND_URL as string,
+        process.env.BACKEND_URL as string,
+      ],
+      advanced: {
+        crossSubDomainCookies: {
+          enabled: true,
+          domain: process.env.FRONTEND_URL as string,
+        },
+        defaultCookieAttributes: {
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          secure: process.env.NODE_ENV === "production",
+          httpOnly: true,
+        },
+      },
+      account: {
+        skipStateCookieCheck: true,
+      },
     });
   }
   return authInstance;
