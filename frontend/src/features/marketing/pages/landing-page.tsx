@@ -15,7 +15,7 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
-import { getToken } from "@/shared/lib/session";
+import { authClient } from "@/lib/auth-client";
 
 const benefits = [
   "Save links from the sources you already browse.",
@@ -49,7 +49,7 @@ const features: Array<{
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const token = getToken();
+  const { data: session } = authClient.useSession();
   const { theme } = useTheme();
 
   const isDark =
@@ -57,23 +57,29 @@ export default function LandingPage() {
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  const openPrimary = () => navigate(token ? "/home/dashboard" : "/signin");
-  const openSecondary = () => navigate("/signup");
+  const openPrimary = () => navigate(session ? "/home/dashboard" : "/auth");
+  const openSecondary = () => navigate("/auth?mode=signup");
 
   return (
     <div className="landing-page relative min-h-screen overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.95),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_50%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-foreground/15 to-transparent" />
+       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        {/* Soft colorful glow blobs */}
+        <div className="absolute top-[10%] left-[15%] h-80 w-80 rounded-full bg-violet-600/10 blur-[100px] dark:bg-violet-500/8 animate-pulse duration-6000" />
+        <div className="absolute bottom-[15%] right-[15%] h-96 w-96 rounded-full bg-cyan-600/10 blur-[120px] dark:bg-cyan-500/8 animate-pulse duration-8000 [animation-delay:2s]" />
+
+        {/* Ambient radial overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.8)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)]" />
+
+        {/* Sparkles particle layer */}
         <SparklesCore
-          id="landing-sparkles"
+          id="auth-sparkles"
           background="transparent"
           minSize={0.4}
-          maxSize={1.2}
-          particleDensity={55}
-          speed={2}
-          particleColor={isDark ? "#f5f5f5" : "#171717"}
-          className="absolute inset-0 h-full w-full opacity-55 dark:opacity-35"
+          maxSize={1.4}
+          particleDensity={40}
+          speed={1.5}
+          particleColor={isDark ? "#a78bfa" : "#4f46e5"}
+          className="absolute inset-0 h-full w-full opacity-60 dark:opacity-40"
         />
       </div>
 
@@ -84,7 +90,7 @@ export default function LandingPage() {
               <img src={Logo} alt="Stashly logo" className="h-5 w-5" width={20} height={20} />
             </div>
             <div>
-              <p className="sm:text-sm text-base font-semibold tracking-tight">Stashly</p>
+              <p className="sm:text-sm text-transparent bg-clip-text bg-linear-to-b from-foreground to-foreground text-base font-semibold tracking-tight">Stashly</p>
               <p className="text-xs hidden sm:block  text-muted-foreground">Save and organize useful content</p>
             </div>
           </div>
@@ -96,7 +102,7 @@ export default function LandingPage() {
               className="cursor-pointer rounded-full px-4"
               onClick={openPrimary}
             >
-              {token ? "Open app" : "Get started"}
+              {session ? "Open app" : "Get started"}
             </Button>
           </div>
         </div>
@@ -115,7 +121,7 @@ export default function LandingPage() {
             </div>
 
             <div className="space-y-4">
-              <h1 className="mx-auto max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl md:text-6xl">
+              <h1 className="mx-auto max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl md:text-6xl ">
                 Save content fast. Find it later without the mess.
               </h1>
               <p className="mx-auto max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
@@ -130,7 +136,7 @@ export default function LandingPage() {
                 className="cursor-pointer rounded-full px-6"
                 onClick={openPrimary}
               >
-                {token ? "Open dashboard" : "Start saving"}
+                {session ? "Open dashboard" : "Start saving"}
                 <ArrowRight size={16} />
               </Button>
               <Button
@@ -252,7 +258,7 @@ export default function LandingPage() {
                     className="cursor-pointer rounded-full px-6"
                     onClick={openPrimary}
                   >
-                    {token ? "Go to dashboard" : "Create your workspace"}
+                    {session ? "Go to dashboard" : "Create your workspace"}
                     <ArrowRight size={16} />
                   </Button>
                   <Button

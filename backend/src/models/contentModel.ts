@@ -1,4 +1,5 @@
 import mongoose, {  Schema, model, Document } from "mongoose";
+import "./userModel.js";
 
 export enum ContentFilter {
   IMAGE = "image",

@@ -7,42 +7,36 @@ import type {
   NewContentPayload,
 } from "@/features/content/types";
 
-function getAuthHeaders(token: string) {
-  return {
+const api = axios.create({
+  baseURL: DATABASE_URL,
+  withCredentials: true,
+  headers: {
     "Content-Type": "application/json",
-    Authorization: token,
-  };
-}
+  },
+});
 
 export async function fetchContentItems(
-  token: string,
   website: ContentFilter,
 ): Promise<ContentItem[]> {
   if (website !== "all") {
-    const response = await axios.get(`${DATABASE_URL}/content/websitetype`, {
+    const response = await api.get("/content/websitetype", {
       params: { websiteType: website },
-      headers: getAuthHeaders(token),
     });
 
     return response.data?.data?.content ?? [];
   }
 
-  const response = await axios.get(`${DATABASE_URL}/content/my`, {
-    headers: getAuthHeaders(token),
-  });
+  const response = await api.get("/content/my");
 
   return response.data?.data?.content ?? [];
 }
 
-export async function createContentItem(token: string, payload: NewContentPayload) {
-  await axios.post(`${DATABASE_URL}/content/add`, payload, {
-    headers: getAuthHeaders(token),
-  });
+export async function createContentItem(payload: NewContentPayload) {
+  await api.post("/content/add", payload);
 }
 
-export async function deleteContentItem(token: string, contentId: string) {
-  await axios.delete(`${DATABASE_URL}/content/My`, {
-    headers: getAuthHeaders(token),
+export async function deleteContentItem(contentId: string) {
+  await api.delete("/content/My", {
     data: { contentId },
   });
 }
