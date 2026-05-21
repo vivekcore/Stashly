@@ -1,13 +1,16 @@
 
 import type{ Request, Response, NextFunction } from 'express';
-
 export const errorHandler = (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  console.error("Error encountered:", err);
+
   let statusCode = err.statusCode || 500;
+  //...
+
   let message = err.message || 'Something went wrong. Please try again later.';
 
   // Mongoose duplicate key error

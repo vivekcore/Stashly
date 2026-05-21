@@ -30,7 +30,7 @@ const startServer = async () => {
     );
 
     // 1. Better Auth handler must come BEFORE express.json() for Express 5
-    // Use *splat for Express 5 wildcard support
+    //  *splat for Express 5 wildcard support
     app.all("/api/v1/auth/*splat", toNodeHandler(auth));
 
     // 2. Body parsers and other routes
