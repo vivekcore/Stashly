@@ -1,4 +1,4 @@
-import { type Auth, type BetterAuthOptions, betterAuth } from "better-auth";
+import { type Auth, type BetterAuthOptions, betterAuth, isProduction } from "better-auth";
 import { Db } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import mongoose from "mongoose";
@@ -35,11 +35,11 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
       advanced: {
         crossSubDomainCookies: {
           enabled: true,
-          domain: process.env.FRONTEND_URL as string,
+          domain: isProduction ? "vercel.app" : "localhost",
         },
         defaultCookieAttributes: {
-          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-          secure: process.env.NODE_ENV === "production",
+          sameSite: isProduction? "none" : "lax",
+          secure: isProduction,
           httpOnly: true,
         },
       },
