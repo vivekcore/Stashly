@@ -11,7 +11,7 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
   if (!authInstance) {
     const db = mongoose.connection.db as Db;
     if (!db) throw new Error("DB not connected yet. Call ConnectDB() first.");
-    const isProd = process.env.NODE_ENV === "production";
+    //const isProd = process.env.NODE_ENV === "production";
 
     authInstance = betterAuth<BetterAuthOptions>({
       database: mongodbAdapter(db, { usePlural: true }),
@@ -23,10 +23,12 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
         github: {
           clientId: process.env.GITHUB_CLIENT_ID as string,
           clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+          redirectURI: `${process.env.BACKEND_URL}/api/v1/auth/callback/github`,
         },
         google: {
           clientId: process.env.GOOGLE_CLIENT_ID as string,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+          redirectURI: `${process.env.BACKEND_URL}/api/v1/auth/callback/google`,
         },
       },
       trustedOrigins: [
@@ -34,19 +36,15 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
         process.env.BACKEND_URL as string,
       ],
       advanced: {
-        crossSubDomainCookies: {
-          enabled: true,
-          domain: isProd ? "undefined" : "localhost",
-        },
         defaultCookieAttributes: {
-          sameSite: isProd? "none" : "lax",
-          secure: isProd,
+          sameSite: "none",
+          secure: true,
           httpOnly: true,
         },
       },
-      account: {
-        skipStateCookieCheck: false,
-      },
+      // account: {
+      //   skipStateCookieCheck: false,
+      // },
     });
   }
   return authInstance;
