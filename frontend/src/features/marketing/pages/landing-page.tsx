@@ -57,8 +57,14 @@ export default function LandingPage() {
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  const openPrimary = () => navigate(session ? "/home/dashboard" : "/auth");
-  const openSecondary = () => navigate("/auth?mode=signup");
+      const NavigateTo = () => {
+        if(session){
+          navigate('/home/dashboard')
+        }
+        else{
+          navigate('/auth?mode=signup')
+        }
+      }
 
   return (
     <div className="landing-page relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -100,7 +106,7 @@ export default function LandingPage() {
             <Button
               size="sm"
               className="cursor-pointer rounded-full px-4"
-              onClick={openPrimary}
+              onClick={NavigateTo}
             >
               {session ? "Open app" : "Get started"}
             </Button>
@@ -134,7 +140,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 className="cursor-pointer rounded-full px-6"
-                onClick={openPrimary}
+                onClick={NavigateTo}
               >
                 {session ? "Open dashboard" : "Start saving"}
                 <ArrowRight size={16} />
@@ -143,7 +149,7 @@ export default function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="cursor-pointer rounded-full px-6"
-                onClick={openSecondary}
+                onClick={NavigateTo}
               >
                 Create account
               </Button>
@@ -256,7 +262,7 @@ export default function LandingPage() {
                   <Button
                     size="lg"
                     className="cursor-pointer rounded-full px-6"
-                    onClick={openPrimary}
+                    onClick={NavigateTo}
                   >
                     {session ? "Go to dashboard" : "Create your workspace"}
                     <ArrowRight size={16} />
@@ -265,7 +271,7 @@ export default function LandingPage() {
                     size="lg"
                     variant="outline"
                     className="cursor-pointer rounded-full px-6"
-                    onClick={openSecondary}
+                    onClick={NavigateTo}
                   >
                     Sign up
                   </Button>
