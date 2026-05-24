@@ -19,6 +19,9 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
       baseURL: process.env.BACKEND_URL,
       basePath: "/api/v1/auth",
 
+      emailAndPassword:{
+        enabled:true
+      },
       socialProviders: {
         github: {
           clientId: process.env.GITHUB_CLIENT_ID as string,

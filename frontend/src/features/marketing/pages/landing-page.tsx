@@ -12,7 +12,13 @@ import Logo from "@/assets/logo.png";
 import { ThemeToggle } from "@/shared/theme/theme-toggle";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card";
 import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
 import { authClient } from "@/lib/auth-client";
@@ -33,17 +39,20 @@ const features: Array<{
   {
     icon: Link2,
     title: "Capture quickly",
-    description: "Save useful links and notes before they disappear into open tabs.",
+    description:
+      "Save useful links and notes before they disappear into open tabs.",
   },
   {
     icon: LayoutDashboard,
     title: "Review clearly",
-    description: "Use one dashboard with a simpler structure and less visual noise.",
+    description:
+      "Use one dashboard with a simpler structure and less visual noise.",
   },
   {
     icon: NotebookPen,
     title: "Write with context",
-    description: "Move from saved material into working notes when it is time to synthesize.",
+    description:
+      "Move from saved material into working notes when it is time to synthesize.",
   },
 ];
 
@@ -57,21 +66,23 @@ export default function LandingPage() {
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-      const NavigateTo = () => {
-        if(session){
-          navigate('/home/dashboard')
-        }
-        else{
-          navigate('/auth?mode=signup')
-        }
-      }
+  const NavigateTo = () => {
+    if (session) {
+      navigate("/home/dashboard");
+    } else {
+      navigate("/auth?mode=signup");
+    }
+  };
 
   return (
-    <div className="landing-page relative min-h-screen overflow-hidden bg-background text-foreground">
-       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <div className="landing-page bg-background text-foreground relative min-h-screen overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden="true"
+      >
         {/* Soft colorful glow blobs */}
-        <div className="absolute top-[10%] left-[15%] h-80 w-80 rounded-full bg-violet-600/10 blur-[100px] dark:bg-violet-500/8 animate-pulse duration-6000" />
-        <div className="absolute bottom-[15%] right-[15%] h-96 w-96 rounded-full bg-cyan-600/10 blur-[120px] dark:bg-cyan-500/8 animate-pulse duration-8000 [animation-delay:2s]" />
+        <div className="absolute top-[10%] left-[15%] h-80 w-80 animate-pulse rounded-full bg-violet-600/10 blur-[100px] duration-6000 dark:bg-violet-500/8" />
+        <div className="absolute right-[15%] bottom-[15%] h-96 w-96 animate-pulse rounded-full bg-cyan-600/10 blur-[120px] duration-8000 [animation-delay:2s] dark:bg-cyan-500/8" />
 
         {/* Ambient radial overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.8)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)]" />
@@ -89,15 +100,25 @@ export default function LandingPage() {
         />
       </div>
 
-      <header className="relative  z-10 px-4 pt-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/80 bg-card/90 px-4 py-3">
+      <header className="relative z-10 px-4 pt-4">
+        <div className="border-border/80 bg-card/90 mx-auto flex max-w-6xl items-center justify-between rounded-full border px-4 py-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10">
-              <img src={Logo} alt="Stashly logo" className="h-5 w-5" width={20} height={20} />
+            <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-2xl">
+              <img
+                src={Logo}
+                alt="Stashly logo"
+                className="h-5 w-5"
+                width={20}
+                height={20}
+              />
             </div>
             <div>
-              <p className="sm:text-sm text-transparent bg-clip-text bg-linear-to-b from-foreground to-foreground text-base font-semibold tracking-tight">Stashly</p>
-              <p className="text-xs hidden sm:block  text-muted-foreground">Save and organize useful content</p>
+              <p className="from-foreground to-foreground bg-linear-to-b bg-clip-text text-base font-semibold tracking-tight text-transparent sm:text-sm">
+                Stashly
+              </p>
+              <p className="text-muted-foreground hidden text-xs sm:block">
+                Save and organize useful content
+              </p>
             </div>
           </div>
 
@@ -114,25 +135,25 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main className="relative z-10 px-4 pb-16 pt-10 md:pt-14">
+      <main className="relative z-10 px-4 pt-10 pb-16 md:pt-14">
         <div className="mx-auto max-w-5xl space-y-10">
           <section className="space-y-8 text-center">
             <div className="flex justify-center">
               <Badge
                 variant="outline"
-                className="border-primary/20 bg-primary/8 px-4 py-1.5 text-primary"
+                className="border-primary/20 bg-primary/8 text-primary px-4 py-1.5"
               >
                 Minimal content workspace
               </Badge>
             </div>
 
             <div className="space-y-4">
-              <h1 className="mx-auto max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl md:text-6xl ">
+              <h1 className="mx-auto max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl md:text-6xl">
                 Save content fast. Find it later without the mess.
               </h1>
-              <p className="mx-auto max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
-                Stashly keeps videos, posts, articles, and notes in one calm workspace so your
-                research stays usable.
+              <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-8 md:text-lg">
+                Stashly keeps videos, posts, articles, and notes in one calm
+                workspace so your research stays usable.
               </p>
             </div>
 
@@ -159,13 +180,15 @@ export default function LandingPage() {
               {benefits.map((item) => (
                 <div
                   key={item}
-                  className="rounded-2xl border border-border/80 bg-card/80 px-4 py-4"
+                  className="border-border/80 bg-card/80 rounded-2xl border px-4 py-4"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 rounded-full bg-primary/10 p-1 text-primary">
+                    <div className="bg-primary/10 text-primary mt-0.5 rounded-full p-1">
                       <CheckCircle2 className="h-4 w-4" />
                     </div>
-                    <p className="text-sm leading-6 text-muted-foreground">{item}</p>
+                    <p className="text-muted-foreground text-sm leading-6">
+                      {item}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -177,11 +200,15 @@ export default function LandingPage() {
               <CardContent className="grid gap-6 p-6 md:grid-cols-[1.1fr_0.9fr] md:p-8">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Badge className="bg-primary text-primary-foreground">Workspace preview</Badge>
-                    <h2 className="text-2xl font-semibold tracking-tight">One place for saved material</h2>
-                    <p className="max-w-lg text-sm leading-7 text-muted-foreground">
-                      The landing page now stays focused on the core use case instead of trying to
-                      explain every possible flow at once.
+                    <Badge className="bg-primary text-primary-foreground">
+                      Workspace preview
+                    </Badge>
+                    <h2 className="text-2xl font-semibold tracking-tight">
+                      One place for saved material
+                    </h2>
+                    <p className="text-muted-foreground max-w-lg text-sm leading-7">
+                      The landing page now stays focused on the core use case
+                      instead of trying to explain every possible flow at once.
                     </p>
                   </div>
 
@@ -189,27 +216,31 @@ export default function LandingPage() {
                     {sources.map((item) => (
                       <div
                         key={item}
-                        className="flex items-center justify-between rounded-2xl border border-border/80 bg-background/70 px-4 py-3"
+                        className="border-border/80 bg-background/70 flex items-center justify-between rounded-2xl border px-4 py-3"
                       >
                         <p className="text-sm font-medium">{item}</p>
-                        <p className="text-xs text-muted-foreground">Saved to workspace</p>
+                        <p className="text-muted-foreground text-xs">
+                          Saved to workspace
+                        </p>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div className="grid gap-4">
-                  <div className="rounded-[1.75rem] border border-border/80 bg-secondary px-5 py-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                  <div className="border-border/80 bg-secondary rounded-[1.75rem] border px-5 py-5">
+                    <p className="text-primary text-xs font-semibold tracking-[0.24em] uppercase">
                       Dashboard
                     </p>
-                    <p className="mt-3 text-4xl font-semibold tracking-[-0.05em]">142</p>
-                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    <p className="mt-3 text-4xl font-semibold tracking-[-0.05em]">
+                      142
+                    </p>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">
                       Saved items organized in one cleaner interface.
                     </p>
                   </div>
 
-                  <div className="rounded-[1.75rem] border border-border/80 bg-background/72 px-5 py-5">
+                  <div className="border-border/80 bg-background/72 rounded-[1.75rem] border px-5 py-5">
                     <p className="text-sm font-semibold">Simple flow</p>
                     <div className="mt-4 space-y-3">
                       <MiniRow label="Capture" value="Links and notes" />
@@ -224,7 +255,7 @@ export default function LandingPage() {
 
           <section className="space-y-6">
             <div className="space-y-3 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
+              <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
                 Why it works
               </p>
               <h2 className="text-3xl font-semibold tracking-[-0.04em] md:text-4xl">
@@ -252,9 +283,9 @@ export default function LandingPage() {
                   <h2 className="text-3xl font-semibold tracking-[-0.04em] md:text-4xl">
                     Keep the good inputs. Drop the clutter around them.
                   </h2>
-                  <p className="mx-auto max-w-2xl text-base leading-7 text-muted-foreground">
-                    The page now focuses on the main promise and uses a lighter, calmer visual
-                    structure in both themes.
+                  <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-7">
+                    The page now focuses on the main promise and uses a lighter,
+                    calmer visual structure in both themes.
                   </p>
                 </div>
 
@@ -297,12 +328,14 @@ function FeatureCard({
   return (
     <Card className="border-border/80 bg-card/85">
       <CardHeader className="space-y-4">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <div className="bg-primary/10 text-primary flex h-11 w-11 items-center justify-center rounded-2xl">
           <Icon className="h-5 w-5" />
         </div>
         <div className="space-y-2">
           <CardTitle className="text-xl">{title}</CardTitle>
-          <CardDescription className="text-sm leading-6">{description}</CardDescription>
+          <CardDescription className="text-sm leading-6">
+            {description}
+          </CardDescription>
         </div>
       </CardHeader>
     </Card>
@@ -311,10 +344,9 @@ function FeatureCard({
 
 function MiniRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-border/80 bg-card px-4 py-3">
-      <p className="text-sm text-muted-foreground">{label}</p>
+    <div className="border-border/80 bg-card flex items-center justify-between rounded-2xl border px-4 py-3">
+      <p className="text-muted-foreground text-sm">{label}</p>
       <p className="text-sm font-medium">{value}</p>
     </div>
   );
 }
-
