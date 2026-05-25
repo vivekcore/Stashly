@@ -142,3 +142,5 @@ Stashly/
 | `npm run build` | TypeScript check + Vite build |
 | `npm run lint` | ESLint |
 | `npm run preview` | Preview production build |
+
+Built by [vivek](https://x.com/vivek_z9)
