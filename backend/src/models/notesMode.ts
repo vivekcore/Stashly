@@ -26,7 +26,7 @@ const NotesSchema = new Schema<INotes>(
     content: { type: Schema.Types.Mixed, required: true },
     userId: { type: Schema.Types.ObjectId, ref:'users',required: true },
     isArchived: { type: Boolean, default: false },
-    tags: { type: [String], default: [""] },
+    tags: { type: [String], default: [] },
   },
   {
     timestamps: true,

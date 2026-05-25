@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync.js";
 import { createNoteDTO, updateNoteDTO } from "../models/notesMode.js";
 import { notesServices } from "../services/notes.services.js";
-import { stringify } from "node:querystring";
 
 export const notesController = {
   createNote: catchAsync(
@@ -10,9 +9,9 @@ export const notesController = {
       const data: createNoteDTO = req.body;
       const userId = req.userId;
       const response = await notesServices.createNote(userId, data);
-      res.status(200).json({
+      res.status(201).json({
         status: "success",
-        message: "note created sucessfully",
+        message: "note created successfully",
         data: response,
       });
     },
@@ -25,7 +24,7 @@ export const notesController = {
       const response = await notesServices.updateNote(userId, noteId, data);
       res.status(200).json({
         status: "success",
-        message: "note updated sucessfully",
+        message: "note updated successfully",
         data: response,
       });
     },
@@ -37,7 +36,7 @@ export const notesController = {
       const response = await notesServices.deleteNote(userId, noteId);
       res.status(200).json({
         status: "success",
-        message: "note deleted sucessfully",
+        message: "note deleted successfully",
         data: response,
       });
     },

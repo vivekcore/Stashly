@@ -22,7 +22,7 @@ interface IResponseList {
     total: number;
     page: number;
     limit: number;
-    tototal: number;
+    totalPages: number;
   };
 }
 class NotesServices {
@@ -89,13 +89,15 @@ class NotesServices {
     page: number,
     limit: number,
   ):Promise<IResponseList> {
-    const skip = (page - 1) * limit;
+    const safePage = Math.max(1, page);
+    const safeLimit = Math.min(Math.max(1, limit), 100);
+    const skip = (safePage - 1) * safeLimit;
     const [notes, total] = await Promise.all([
       notesModel
         .find({ userId })
         .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(limit),
+        .limit(safeLimit),
       notesModel.countDocuments({ userId }),
     ]);
     const response = notes.map((n) => this.toResponseList(n));
@@ -103,9 +105,9 @@ class NotesServices {
         notes: response,
         pagination:{
             total,
-            page,
-            limit,
-            tototal: Math.ceil(total/limit)
+            page: safePage,
+            limit: safeLimit,
+            totalPages: Math.ceil(total/safeLimit)
         }
     }
   }
@@ -115,8 +117,8 @@ class NotesServices {
       id: note._id.toString(),
       title: note.title,
       content: note.content,
-      tags: note.tags || [""],
-      isArchived: note.isArchived,
+      tags: note.tags || [],
+      isArchived: note.isArchived ?? false,
       createdAt: note.createdAt,
       updatedAt: note.updatedAt,
     };
@@ -125,8 +127,8 @@ class NotesServices {
     return{
         id: note._id.toString(),
         title:note.title,
-        tags:note.tags || [""],
-        isArchived:note.isArchived,
+        tags:note.tags || [],
+        isArchived:note.isArchived ?? false,
         createdAt:note.createdAt,
         updatedAt:note.updatedAt
     }
