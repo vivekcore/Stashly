@@ -1,241 +1,144 @@
 # Stashly
 
-A full-stack collaborative note-taking and content creation platform with a rich text editor powered by Tiptap.
+Full-stack content management app with a rich text editor. Save links from YouTube, Twitter, LinkedIn. Write notes with Tiptap.
 
-## 🎯 Project Overview
+## Screenshots
 
-Stashly is a web application designed for users to create, edit, and collaborate on rich-text documents. The platform features a powerful editor with extensive formatting capabilities, user authentication, and real-time interactions.
+![Dashboard](frontend/src/assets/Screenshot%202026-05-25%20171940.png)
+![Text Editor](frontend/src/assets/Screenshot%202026-05-25%20172048.png)
+![Notes List](frontend/src/assets/Screenshot%202026-05-25%20172355.png)
 
-### Key Features
+## Tech Stack
 
-- **Rich Text Editor** - Powered by Tiptap with support for:
-  - Text formatting (bold, italic, underline, strikethrough)
-  - Headers and block quotes
-  - Code blocks and inline code
-  - Lists (ordered, unordered, and todo lists)
-  - Images and links
-  - Text alignment and highlighting
-  - Subscript and superscript
-  - Horizontal rules
+| Layer | Tech |
+|-------|------|
+| Frontend | React 19, TypeScript, Vite, TailwindCSS v4 |
+| Editor | Tiptap 3 (StarterKit, Highlight, TextAlign, Image, TaskList, Superscript/Subscript) |
+| State | Redux Toolkit |
+| Backend | Express 5, TypeScript |
+| Database | MongoDB + Mongoose 9 |
+| Auth | Better-Auth (Google / GitHub OAuth) |
+| Validation | Zod |
+| Icons | Lucide React |
+| Notifications | React Toastify |
 
-- **User Authentication** - Secure JWT-based authentication with bcrypt password hashing
-- **Responsive Design** - Built with TailwindCSS for mobile and desktop
-- **State Management** - Redux Toolkit for centralized state management
-- **Database** - MongoDB for data persistence
-- **API-driven** - RESTful backend API
+## Features
 
-## 🏗️ Project Structure
+- Save content from YouTube, Twitter, LinkedIn with auto-embeds
+- Rich text editor with headings, lists, code blocks, text alignment, color highlight, images, links
+- Notes list with create/edit/delete, auto-save (2s debounce)
+- Authentication via Google / GitHub OAuth
+- Share individual content items via public slug URL
+- Responsive layout (sidebar desktop, pill nav mobile)
 
-```
-Stashly/
-├── backend/                   # Express.js backend API server
-│   ├── src/
-│   │   ├── config.ts         # Configuration management
-│   │   ├── index.ts         # Server entry point
-│   │   ├── db/              # Database configuration
-│   │   ├── routes/          # API route handlers
-│   │   ├── middlewares/     # Express middlewares
-│   │   ├── types/         # TypeScript type definitions
-│   │   └── utils.ts        # Utility functions
-│   ├── .env.example        # Environment variables template
-│   └── package.json
-│
-├── frontend/                 # React + Vite frontend application
-│   ├── src/
-│   │   ├── app/            # App components
-│   │   ├── components/     # Reusable React components
-│   │   │   ├── tiptap-*   # Tiptap editor related components
-│   │   │   └── ui/        # UI components
-│   │   ├── features/       # Redux slices (AlertSlice, FormSlice, UserSlice)
-│   │   ├── hooks/         # Custom React hooks
-│   │   ├── lib/          # Utility libraries
-│   │   ├── Helper/       # Helper functions (embeddings, URL detection)
-│   │   ├── pages/        # Page components
-│   │   ├── icons/       # Icon components
-│   │   ├── styles/     # Global styles
-│   │   ├── assets/     # Static assets
-│   │   ├── App.tsx     # Main app component
-│   │   └── main.tsx    # React entry point
-│   ├── tailwind.config.ts  # TailwindCSS configuration
-│   └── package.json
-│
-├── README.md                 # This file
-└── plan.md                  # Project plan
-```
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
-- **MongoDB** (local or Atlas)
+- Node.js 18+
+- MongoDB (local or Atlas)
 
-### Installation
+### Install
 
-1. **Clone the repository**
+```bash
+# Backend
+cd backend
+npm install
+cp .env.example .env   # fill in DATABASE_URL, Better-Auth secrets, FRONTEND_URL
+npm run dev
 
-   ```bash
-   git clone https://github.com/yourusername/Stashly.git
-   cd Stashly
-   ```
+# Frontend (separate terminal)
+cd frontend
+npm install
+npm run dev
+```
 
-2. **Backend Setup**
+### Environment
 
-   ```bash
-   cd backend
-   npm install
-   cp .env.example .env
-   # Edit .env with your MongoDB connection string and other credentials
-   npm run dev
-   ```
+Backend `.env`:
 
-3. **Frontend Setup** (in a new terminal)
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-### Environment Variables
-
-#### Backend (.env)
-
-Create a `.env` file in `backend/` with:
-
-```env
-# MongoDB Connection String
-DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/stashly
-
-# Server Port
+```
+DATABASE_URL=mongodb+srv://...
 PORT=3000
-
-# JWT Secret Key (generate a strong random string)
-USER_SECRET_KEY=your-secret-key-here
-
-# Bcrypt Salt Rounds
-SALTROUND=10
+BETTER_AUTH_SECRET=...
+BETTER_AUTH_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
 ```
 
-See [.env.example](./backend/.env.example) for reference.
+Frontend `.env`:
 
-## 📦 Tech Stack
+```
+VITE_API_URL=http://localhost:3000
+```
 
-### Frontend
+## API Endpoints
 
-- **React** 19 - UI library
-- **TypeScript** - Type-safe JavaScript
-- **Vite** - Fast build tool and dev server
-- **TailwindCSS** - Utility-first CSS framework
-- **Tiptap** - Headless rich text editor
-- **Redux Toolkit** - State management
-- **React Router** - Client-side routing
-- **Axios** - HTTP client
+All routes under `/api/v1`.
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | /auth/* | - | Better-Auth handlers |
+| POST | /content/add | Yes | Save a link |
+| GET | /content/my | Yes | List saved content |
+| GET | /content/websitetype | Yes | Filter by website |
+| DELETE | /content/My | Yes | Delete content |
+| GET | /content/:slug | - | Shared content by slug |
+| POST | /note/create | Yes | Create a note |
+| PATCH | /note/update/:noteId | Yes | Update a note |
+| DELETE | /note/delete/:noteId | Yes | Delete a note |
+| GET | /note/my-note/:noteId | Yes | Get a single note |
+| GET | /note/my-note-bulk | Yes | List notes (paginated) |
+
+## Project Structure
+
+```
+Stashly/
+├── backend/
+│   └── src/
+│       ├── index.ts              # Server entry
+│       ├── auth/auth.ts          # Better-Auth config
+│       ├── db/db.ts              # MongoDB connection
+│       ├── models/               # Mongoose schemas
+│       ├── routes/               # Express routers
+│       ├── controllers/          # Route handlers
+│       ├── services/             # Business logic
+│       ├── middlewares/          # Auth, validation, error
+│       ├── validations/          # Zod schemas
+│       └── utils/                # Config, helpers
+├── frontend/
+│   └── src/
+│       ├── app/                  # Store, router
+│       ├── features/             # Feature modules
+│       │   ├── auth/             # Login, logout
+│       │   ├── content/          # Saved links CRUD
+│       │   ├── editor/           # Tiptap editor, notes list
+│       │   ├── shell/            # Layout, sidebar, header
+│       │   └── marketing/        # Landing page
+│       ├── shared/               # UI components, hooks, lib
+│       └── assets/               # Static assets, screenshots
+├── README.md
+└── plan.md
+```
+
+## Scripts
 
 ### Backend
 
-- **Express.js** - Web framework
-- **TypeScript** - Type-safe JavaScript
-- **MongoDB** - NoSQL database
-- **Mongoose** - MongoDB ODM
-- **JWT** (jsonwebtoken) - Authentication
-- **bcrypt** - Password hashing
-- **Zod** - Schema validation
-- **CORS** - Cross-origin resource sharing
-
-## 🛠️ Available Scripts
-
-### Backend
-
-```bash
-# Development mode
-npm run dev
-
-# Build TypeScript
-npm run build
-
-# Start production server
-npm start
-```
+| Command | Action |
+|---------|--------|
+| `npm run dev` | Build + start with nodemon |
+| `npm run build` | TypeScript compile |
+| `npm start` | Run compiled JS |
 
 ### Frontend
 
-```bash
-# Development server with HMR
-npm run dev
-
-# Production build
-npm run build
-
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-
-# Preview production build
-npm run preview
-```
-
-## 📝 API Endpoints
-
-### User Routes
-
-- `POST /user/register` - User registration
-- `POST /user/login` - User login
-- `GET /user/profile` - Get user profile
-- `PUT /user/profile` - Update user profile
-
-_(Add more endpoints as your API expands)_
-
-## 🔐 Security Considerations
-
-- Environment variables are stored in `.env` and excluded from version control
-- Passwords are hashed using bcrypt before storage
-- JWT tokens are used for stateless authentication
-- CORS is configured to prevent unauthorized cross-origin requests
-- Input validation using Zod schemas
-
-## 📱 Responsive Design
-
-The frontend is fully responsive and tested on:
-
-- Mobile devices (< 640px)
-- Tablets (640px - 1024px)
-- Desktops (> 1024px)
-
-## 🧪 Testing
-
-_(Add testing setup details here once configured)_
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the ISC License - see the individual package.json files for details.
-
-## 👤 Author
-
-**Vivek** - [GitHub](https://github.com/vivekinz)
-
-## 🎓 Learning & References
-
-- [Tiptap Documentation](https://tiptap.dev/)
-- [React Documentation](https://react.dev/)
-- [Express.js Guide](https://expressjs.com/)
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [TailwindCSS Documentation](https://tailwindcss.com/)
-
-## 📞 Support
-
-For issues, questions, or suggestions, please open an issue on GitHub.
-
----
-
-**Last Updated:** March 2, 2026
+| Command | Action |
+|---------|--------|
+| `npm run dev` | Vite dev server (HMR) |
+| `npm run build` | TypeScript check + Vite build |
+| `npm run lint` | ESLint |
+| `npm run preview` | Preview production build |
