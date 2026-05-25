@@ -72,7 +72,21 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/shared/lib/tiptap-utils";
 // --- Styles ---
 import "@/features/editor/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@/features/editor/components/tiptap-templates/simple/data/content.json";
+type EditorContent = {
+  type: string;
+  content?: Array<{ type: string; [key: string]: unknown }>;
+  [key: string]: unknown;
+};
+
+interface SimpleEditorProps {
+  initialContent?: EditorContent | null;
+  onContentChange?: (content: EditorContent) => void;
+}
+
+const emptyDoc: EditorContent = {
+  type: "doc",
+  content: [{ type: "paragraph" }],
+};
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -85,9 +99,7 @@ const MainToolbarContent = ({
 }) => {
   return (
     <>
-      <ToolbarGroup>
-        {/* <ThemeToggle /> */}
-      </ToolbarGroup>
+      <ToolbarGroup>{/* <ThemeToggle /> */}</ToolbarGroup>
       <Spacer />
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
@@ -180,13 +192,17 @@ const MobileToolbarContent = ({
   </>
 );
 
-export function SimpleEditor() {
+export function SimpleEditor({
+  initialContent,
+  onContentChange,
+}: SimpleEditorProps = {}) {
   const isMobile = useIsBreakpoint();
   const { height } = useWindowSize();
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main",
   );
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const suppressUpdateRef = useRef(false);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -225,26 +241,66 @@ export function SimpleEditor() {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
-  });
-
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+    content: initialContent ?? emptyDoc,
   });
 
   useEffect(() => {
-    if (!isMobile && mobileView !== "main") {
-      setMobileView("main");
+    if (!editor) return;
+
+    const handleUpdate = () => {
+      if (suppressUpdateRef.current) {
+        suppressUpdateRef.current = false;
+        return;
+      }
+      onContentChange?.(editor.getJSON());
+    };
+
+    editor.on("update", handleUpdate);
+    return () => {
+      editor.off("update", handleUpdate);
+    };
+  }, [editor, onContentChange]);
+
+  useEffect(() => {
+    if (!editor) return;
+    suppressUpdateRef.current = true;
+    editor.commands.setContent(initialContent ?? emptyDoc);
+  }, [editor, initialContent]);
+
+  const [toolbarHeight, setToolbarHeight] = useState(0);
+
+  useEffect(() => {
+    const updateToolbarHeight = () => {
+      setToolbarHeight(toolbarRef.current?.getBoundingClientRect().height ?? 0);
+    };
+
+    updateToolbarHeight();
+
+    const observer = new ResizeObserver(updateToolbarHeight);
+    if (toolbarRef.current) {
+      observer.observe(toolbarRef.current);
     }
-  }, [isMobile, mobileView]);
+
+    window.addEventListener("resize", updateToolbarHeight);
+    return () => {
+      window.removeEventListener("resize", updateToolbarHeight);
+      observer.disconnect();
+    };
+  }, [isMobile, mobileView, height]);
+
+  const rect = useCursorVisibility({
+    editor,
+    overlayHeight: toolbarHeight,
+  });
+
+  const effectiveMobileView = isMobile ? mobileView : "main";
 
   return (
     <div>
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
-        variant="floating"
-          className="h-15 px-10 "
+          variant="fixed"
+          className="h-15 px-10"
           ref={toolbarRef}
           style={{
             ...(isMobile
@@ -254,7 +310,7 @@ export function SimpleEditor() {
               : {}),
           }}
         >
-          {mobileView === "main" ? (
+          {effectiveMobileView === "main" ? (
             <MainToolbarContent
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
@@ -262,7 +318,9 @@ export function SimpleEditor() {
             />
           ) : (
             <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
+              type={
+                effectiveMobileView === "highlighter" ? "highlighter" : "link"
+              }
               onBack={() => setMobileView("main")}
             />
           )}
@@ -277,4 +335,3 @@ export function SimpleEditor() {
     </div>
   );
 }
-
