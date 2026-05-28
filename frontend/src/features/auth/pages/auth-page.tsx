@@ -54,7 +54,7 @@ export default function AuthPage() {
       </header>
 
       {/* Main Authentication Card Area */}
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-8">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 ">
         <div className="w-full max-w-md space-y-6">
           {/* Logo and Brand Header */}
           <div className="flex flex-col items-center space-y-2 text-center animate-fade-in">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router";
 import { Loader2 } from "lucide-react";
-
+import  EmailVerificationSent  from "./EmailVerificationSent";
 import { useAppDispatch } from "@/app/store/hooks";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/shared/ui/button";
@@ -68,8 +68,10 @@ const providers = [
 type ProviderId = (typeof providers)[number]["id"];
 
 export function AuthForm({ mode }: AuthFormProps) {
+  const [userEmail, setUserEmail] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
   const isSignUp = mode === "signup";
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [activeProvider, setActiveProvider] = useState<ProviderId | null>(null);
   const { data: session, isPending } = authClient.useSession();
 
@@ -94,7 +96,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   }
 
   const handleProviderSignIn = async (provider: ProviderId) => {
-    setError(null);
+    setError(undefined);
     setActiveProvider(provider);
 
     try {
@@ -115,9 +117,10 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
+    setUserEmail(email);
     const password = formData.get("password") as string;
     const callbackURL = `${window.location.origin}${redirectTo}`;
-    await authClient.signUp.email(
+    const { error } = await authClient.signUp.email(
       {
         name,
         email,
@@ -130,7 +133,17 @@ export function AuthForm({ mode }: AuthFormProps) {
         },
       },
     );
+    if (error) {
+       if (error.code === "USER_ALREADY_EXISTS") {
+      setError("This email is already registered. Please login instead.");
+    } else {
+      setError(error.message); // fallback for other errors
+    }
+    return;
   }
+    setEmailSent(true);
+  }
+
   async function handleSignin(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -151,6 +164,9 @@ export function AuthForm({ mode }: AuthFormProps) {
         },
       },
     );
+  }
+  if (emailSent) {
+    return <EmailVerificationSent email={userEmail} callbackUrl={`${window.location.origin}${redirectTo}`} />;
   }
   return (
     <Card className="border-border/80 bg-card/90 relative overflow-hidden rounded-3xl border p-1 shadow-2xl backdrop-blur-xl transition-all duration-300">
@@ -188,9 +204,12 @@ export function AuthForm({ mode }: AuthFormProps) {
                 <Input name="password" type="password" placeholder="........" />
               </div>
               <div>
-                <Button 
-                 className={`border-border/80 bg-background/50 text-foreground relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:bg-accent hover:scale-[1.015] active:scale-[0.99]`}
-                type="submit">SignUp</Button>
+                <Button
+                  className={`border-border/80 bg-background/50 text-foreground hover:bg-accent relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}
+                  type="submit"
+                >
+                  SignUp
+                </Button>
               </div>
             </form>
           ) : (
@@ -207,10 +226,13 @@ export function AuthForm({ mode }: AuthFormProps) {
                 <Label>Password</Label>
                 <Input name="password" type="password" placeholder="........" />
               </div>
-               <div>
-                <Button 
-                 className={`border-border/80 bg-background/50 text-foreground relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:bg-background/20  hover:scale-[1.015] active:scale-[0.99]`}
-                type="submit">SignIn</Button>
+              <div>
+                <Button
+                  className={`border-border/80 bg-background/50 text-foreground hover:bg-background/20 relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}
+                  type="submit"
+                >
+                  SignIn
+                </Button>
               </div>
             </form>
           )}
