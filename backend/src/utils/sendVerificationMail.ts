@@ -1,8 +1,6 @@
-// sendVerificationMail.js
 
-// mailer.js
 import nodemailer from "nodemailer";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 dotenv.config();
 export const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -12,14 +10,20 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendEmail({to, url}:{to:string,url:string}) {
+interface IsendEmail {
+  to: string;
+  url?: string;
+  subject: string;
+  text?: string;
+}
 
-
-  await transporter.sendMail({
-    from: '"My App" <yourgmail@gmail.com>',
-    to,
-    subject: "Verify your email",
-    html: `
+export async function sendEmail({ to, url, subject, text }: IsendEmail) {
+  if (url) {
+    await transporter.sendMail({
+      from: '"My App" <yourgmail@gmail.com>',
+      to,
+      subject,
+      html: `
       <h2>Email Verification</h2>
       <p>Click the button below to verify your email:</p>
 
@@ -35,5 +39,14 @@ export async function sendEmail({to, url}:{to:string,url:string}) {
          Verify Email
       </a>
     `,
-  });
+    });
+  }
+  if (text) {
+    await transporter.sendMail({
+      from: "Stashly",
+      to,
+      subject,
+      text,
+    });
+  }
 }
