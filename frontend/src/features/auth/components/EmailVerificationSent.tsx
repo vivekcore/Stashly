@@ -4,15 +4,26 @@ import { Mail, CheckCircle2, Clock, Folder } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
 import { authClient } from "@/lib/auth-client";
-import { useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
-export default function EmailVerification({ email,callbackUrl }: {email:string, callbackUrl:string}) {
+export default function EmailVerification() {
   const [cooldown, setCooldown] = useState(0);
   const [sending, setSending] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
  const session = authClient.useSession();
  const navigate = useNavigate()
+const location = useLocation();
+  const locationState = location.state as {
+    from?: { pathname?: string };
+  } | null;
+  const redirectTo = locationState?.from?.pathname ?? "/#/home/dashboard";
+  const callbackURL = `${window.location.origin}${redirectTo}`;
 
+  useEffect(() => {
+    if(session.data?.user.emailVerified){
+      navigate("/home/dashboard")
+    }
+  },[session.data?.user?.emailVerified,navigate])
  if(session.data?.user.emailVerified){
   navigate("/#/home/dashboard");
  }
@@ -27,10 +38,9 @@ export default function EmailVerification({ email,callbackUrl }: {email:string, 
     if (cooldown > 0 || sending) return;
     setSending(true);
 
-    // Replace this with your actual resend API call
    await authClient.sendVerificationEmail({
-      email,
-      callbackURL:callbackUrl
+      email: session.data?.user.email as string,
+      callbackURL,
     });
 
     setSending(false);
@@ -55,7 +65,7 @@ export default function EmailVerification({ email,callbackUrl }: {email:string, 
           </h1>
           <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
             We&apos;ve sent a verification link to{" "}
-            <span className="font-medium text-foreground">{email}</span>
+            <span className="font-medium text-foreground">{session.data?.user.email}</span>
           </p>
 
           {/* Info box */}
@@ -99,7 +109,7 @@ export default function EmailVerification({ email,callbackUrl }: {email:string, 
                 : "Resend verification email"}
             </Button>
             <Button variant="outline" className="w-full">
-              <a href="/#/auth?mode=signup">Use a different email</a>
+              <Link to="/auth/signup">Use a different email</Link>
             </Button>
           </div>
 

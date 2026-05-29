@@ -54,7 +54,7 @@ export default function SharedContentPage() {
       <div className="mx-auto max-w-4xl space-y-6">
         <Link
           className="inline-flex items-center gap-2 text-sm font-medium text-primary underline underline-offset-4"
-          to="/auth"
+          to="/auth/signin"
         >
           <ArrowLeft size={16} />
           Back to Stashly

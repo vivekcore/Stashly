@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, Navigate, useLocation } from "react-router";
 import { Loader2 } from "lucide-react";
-import  EmailVerificationSent  from "./EmailVerificationSent";
 import { useAppDispatch } from "@/app/store/hooks";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/shared/ui/button";
@@ -15,10 +14,6 @@ import {
 import { clearUsername, setUsername } from "@/features/auth/store/user-slice";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
-
-interface AuthFormProps {
-  mode: "signin" | "signup";
-}
 
 const providers = [
   {
@@ -65,14 +60,24 @@ const providers = [
   },
 ] as const;
 
-type ProviderId = (typeof providers)[number]["id"];
-
-export function AuthForm({ mode }: AuthFormProps) {
-  const [userEmail, setUserEmail] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
+// type ProviderId = (typeof providers)[number]["id"];
+interface IAuthPropos {
+  mode: "signin" | "signup";
+  onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
+  onSocial: (id: string) => void;
+  error: string | undefined;
+  activeProvider: string | null;
+  isLoading?: boolean;
+}
+export function AuthForm({
+  mode,
+  onSubmit,
+  onSocial,
+  error,
+  activeProvider,
+  isLoading,
+}: IAuthPropos) {
   const isSignUp = mode === "signup";
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [activeProvider, setActiveProvider] = useState<ProviderId | null>(null);
   const { data: session, isPending } = authClient.useSession();
 
   const dispatch = useAppDispatch();
@@ -80,7 +85,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const locationState = location.state as {
     from?: { pathname?: string };
   } | null;
-  const redirectTo = locationState?.from?.pathname ?? "/#/home/dashboard";
+  const redirectTo = locationState?.from?.pathname ?? "/home/dashboard";
 
   useEffect(() => {
     if (!session?.user) {
@@ -95,79 +100,6 @@ export function AuthForm({ mode }: AuthFormProps) {
     return <Navigate to={redirectTo} replace state={{ from: location }} />;
   }
 
-  const handleProviderSignIn = async (provider: ProviderId) => {
-    setError(undefined);
-    setActiveProvider(provider);
-
-    try {
-      const callbackURL = `${window.location.origin}${redirectTo}`;
-      await authClient.signIn.social({
-        provider,
-        callbackURL,
-      });
-    } catch {
-      setError("Authentication failed.");
-      setActiveProvider(null);
-    }
-  };
-  async function handleSignup(e: React.ChangeEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    setUserEmail(email);
-    const password = formData.get("password") as string;
-    const callbackURL = `${window.location.origin}${redirectTo}`;
-    const { error } = await authClient.signUp.email(
-      {
-        name,
-        email,
-        password,
-        callbackURL,
-      },
-      {
-        onError: (ctx) => {
-          setError(ctx.error.message);
-        },
-      },
-    );
-    if (error) {
-       if (error.code === "USER_ALREADY_EXISTS") {
-      setError("This email is already registered. Please login instead.");
-    } else {
-      setError(error.message); // fallback for other errors
-    }
-    return;
-  }
-    setEmailSent(true);
-  }
-
-  async function handleSignin(e: React.ChangeEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const callbackURL = `${window.location.origin}${redirectTo}`;
-    await authClient.signIn.email(
-      {
-        email,
-        password,
-        callbackURL,
-      },
-      {
-        onError: (ctx) => {
-          setError(ctx.error.message);
-        },
-      },
-    );
-  }
-  if (emailSent) {
-    return <EmailVerificationSent email={userEmail} callbackUrl={`${window.location.origin}${redirectTo}`} />;
-  }
   return (
     <Card className="border-border/80 bg-card/90 relative overflow-hidden rounded-3xl border p-1 shadow-2xl backdrop-blur-xl transition-all duration-300">
       <CardHeader className="space-y-1.5 pb-6">
@@ -184,7 +116,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       <CardContent className="space-y-4 px-6 pb-6">
         <div className="flex flex-col gap-3">
           {mode === "signup" ? (
-            <form onSubmit={handleSignup} className="flex flex-col gap-3">
+            <form onSubmit={onSubmit} className="flex flex-col gap-3">
               <div>
                 <Label>Name</Label>
                 <Input name="name" type="text" placeholder="Eren" />
@@ -207,13 +139,21 @@ export function AuthForm({ mode }: AuthFormProps) {
                 <Button
                   className={`border-border/80 bg-background/50 text-foreground hover:bg-accent relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}
                   type="submit"
+                  disabled={isLoading || activeProvider !== null || isPending}
                 >
-                  SignUp
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing up...
+                    </>
+                  ) : (
+                    "SignUp"
+                  )}
                 </Button>
               </div>
             </form>
           ) : (
-            <form onSubmit={handleSignin} className="flex flex-col gap-3">
+            <form onSubmit={onSubmit} className="flex flex-col gap-3">
               <div>
                 <Label>Email</Label>
                 <Input
@@ -230,8 +170,16 @@ export function AuthForm({ mode }: AuthFormProps) {
                 <Button
                   className={`border-border/80 bg-background/50 text-foreground hover:bg-background/20 relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}
                   type="submit"
+                  disabled={isLoading || activeProvider !== null || isPending}
                 >
-                  SignIn
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    "SignIn"
+                  )}
                 </Button>
               </div>
             </form>
@@ -244,7 +192,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                 key={provider.id}
                 className={`border-border/80 bg-background/50 text-foreground relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99] ${provider.hoverClass}`}
                 type="button"
-                onClick={() => handleProviderSignIn(provider.id)}
+                onClick={() => onSocial(provider.id)}
                 disabled={activeProvider !== null || isPending}
               >
                 {isCurrentSubmitting ? (
@@ -274,7 +222,7 @@ export function AuthForm({ mode }: AuthFormProps) {
             {isSignUp ? "Already have an account?" : "Need a new account?"}{" "}
             <Link
               className="text-primary hover:text-primary/80 font-semibold underline underline-offset-4 transition-colors"
-              to={isSignUp ? "/auth" : "/auth?mode=signup"}
+              to={isSignUp ? "/auth/signin" : "/auth/signup"}
               state={locationState}
             >
               {isSignUp ? "Sign in" : "Sign up"}

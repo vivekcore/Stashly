@@ -31,7 +31,7 @@ export function ProtectedLayout() {
   }
 
   if (!session) {
-    return <Navigate to="/auth" replace state={{ from: location }} />;
+    return <Navigate to="/auth/signin" replace state={{ from: location }} />;
   }
 
   return (

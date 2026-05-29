@@ -34,7 +34,7 @@ export function LogoutDialog() {
       await authClient.signOut();
       dispatch(clearUsername());
       dispatch(toggle());
-      navigate("/auth", { replace: true });
+      navigate("/auth/signin", { replace: true });
     } finally {
       setIsLoggingOut(false);
     }

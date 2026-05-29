@@ -23,6 +23,7 @@ import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
 import { authClient } from "@/lib/auth-client";
 
+
 const benefits = [
   "Save links from the sources you already browse.",
   "Keep everything in one clean dashboard.",
@@ -66,13 +67,7 @@ export default function LandingPage() {
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  const NavigateTo = () => {
-    if (session) {
-      navigate("/home/dashboard");
-    } else {
-      navigate("/auth?mode=signup");
-    }
-  };
+  
 
   return (
     <div className="landing-page bg-background text-foreground relative min-h-screen overflow-hidden">
@@ -127,7 +122,13 @@ export default function LandingPage() {
             <Button
               size="sm"
               className="cursor-pointer rounded-full px-4"
-              onClick={NavigateTo}
+              onClick={() => {
+                if (session) {
+                  navigate("/home/dashboard");
+                } else {
+                  navigate("/auth/signin");
+                }
+              }}
             >
               {session ? "Open app" : "Get started"}
             </Button>
@@ -161,7 +162,13 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 className="cursor-pointer rounded-full px-6"
-                onClick={NavigateTo}
+                onClick={() => {
+                  if (session) {
+                    navigate("/home/dashboard");
+                  } else {
+                    navigate("/auth/signin");
+                  }
+                }}
               >
                 {session ? "Open dashboard" : "Start saving"}
                 <ArrowRight size={16} />
@@ -170,7 +177,13 @@ export default function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="cursor-pointer rounded-full px-6"
-                onClick={NavigateTo}
+                onClick={() => {
+                  if (session) {
+                    navigate("/home/dashboard");
+                  } else {
+                    navigate("/auth/signup");
+                  }
+                }}
               >
                 Create account
               </Button>
@@ -293,7 +306,13 @@ export default function LandingPage() {
                   <Button
                     size="lg"
                     className="cursor-pointer rounded-full px-6"
-                    onClick={NavigateTo}
+                    onClick={() => {
+                      if (session) {
+                        navigate("/home/dashboard");
+                      } else {
+                        navigate("/auth/signin");
+                      }
+                    }}
                   >
                     {session ? "Go to dashboard" : "Create your workspace"}
                     <ArrowRight size={16} />
@@ -302,7 +321,13 @@ export default function LandingPage() {
                     size="lg"
                     variant="outline"
                     className="cursor-pointer rounded-full px-6"
-                    onClick={NavigateTo}
+                    onClick={() => {
+                      if (session) {
+                        navigate("/home/dashboard");
+                      } else {
+                        navigate("/auth/signup");
+                      }
+                    }}
                   >
                     Sign up
                   </Button>

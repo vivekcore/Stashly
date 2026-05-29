@@ -10,6 +10,9 @@ import EditorPage from "@/features/editor/pages/editor-page";
 import LandingPage from "@/features/marketing/pages/landing-page";
 import SharedContentPage from "@/features/content/pages/shared-content-page";
 import AuthPage from "@/features/auth/pages/auth-page";
+import SignIn from "@/features/auth/pages/signin-page";
+import SignUp from "@/features/auth/pages/signup-page";
+import EmailVerification from "@/features/auth/components/EmailVerificationSent";
 
 function AppRouter() {
   return (
@@ -18,7 +21,12 @@ function AppRouter() {
         <HashRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth" element={<AuthPage />} >
+                  <Route path="signin" element={<SignIn/>}/>
+                  <Route path="signup" element={<SignUp/>} />
+                  <Route path="email-verify" element={<EmailVerification/>} />
+            </Route>
+           
             <Route path="/shared/:slug" element={<SharedContentPage />} />
             <Route path="/home" element={<ProtectedLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />
