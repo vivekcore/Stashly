@@ -1,13 +1,18 @@
-import { LogOut, Plus } from "lucide-react";
+import { LogOut, Mail, Plus } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAppDispatch } from "@/app/store/hooks";
-import { ThemeToggle } from "@/shared/theme/theme-toggle";
+import {ThemeToggle} from "@/shared/theme/theme-toggle"
 import { Button } from "@/shared/ui/button";
 import { toggle } from "@/features/content/store/content-dialog-slice";
 import { toggle as logoutAleart } from "@/features/auth/store/logout-alert-slice";
 import { cn } from "@/shared/lib/utils";
+import { authClient } from "@/lib/auth-client";
+
 export function AppHeader() {
   const dispatch = useAppDispatch();
+  const { data: session } = authClient.useSession();
+  const isVerified = session?.user?.emailVerified;
+
   const mobileNavItems = [
     { to: "/home/dashboard", label: "Dashboard" },
     { to: "/home/youtube", label: "Youtube" },
@@ -18,6 +23,14 @@ export function AppHeader() {
 
   return (
     <header className="border-border/60 bg-background/80 sticky top-0 z-30 border-b backdrop-blur">
+      {!isVerified && session && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 text-center">
+          <p className="text-amber-600 dark:text-amber-400 text-xs font-medium flex items-center justify-center gap-2">
+            <Mail size={14} />
+            Please verify your email address to access all features.
+          </p>
+        </div>
+      )}
       <div className="flex items-center justify-between gap-3 px-4 py-2 sm:py-3 md:px-6">
         <div className="min-w-0">
           <p className="text-muted-foreground hidden text-sm font-medium sm:block">

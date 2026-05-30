@@ -9,17 +9,21 @@
     "dev": "npm run build && npm run start"
   },
   "dependencies": {
+    "@better-auth/infra": "^0.2.10",
     "@better-auth/mongo-adapter": "^1.6.11",
     "better-auth": "^1.6.11",
     "cors": "2.8.6",
     "dotenv": "17.3.1",
     "express": "5.2.1",
-    "mongoose": "9.2.1"
+    "mongoose": "9.2.1",
+    "nodemailer": "^8.0.9",
+    "resend": "^6.12.4"
   },
   "devDependencies": {
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
     "@types/node": "22.0.0",
+    "@types/nodemailer": "^8.0.0",
     "typescript": "5.9.3"
   },
   "keywords": [],

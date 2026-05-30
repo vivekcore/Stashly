@@ -1,15 +1,14 @@
-import { useSearchParams, Link } from "react-router";
+import {  Link, Outlet } from "react-router";
 import { ArrowLeft } from "lucide-react";
 
-import { AuthForm } from "@/features/auth/components/auth-form";
+
 import Logo from "@/assets/logo.png";
 import { ThemeToggle } from "@/shared/theme/theme-toggle";
 import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
 
 export default function AuthPage() {
-  const [searchParams] = useSearchParams();
-  const mode = searchParams.get("mode") === "signup" ? "signup" : "signin";
+  
   const { theme } = useTheme();
 
   const isDark =
@@ -54,7 +53,7 @@ export default function AuthPage() {
       </header>
 
       {/* Main Authentication Card Area */}
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-8">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 ">
         <div className="w-full max-w-md space-y-6">
           {/* Logo and Brand Header */}
           <div className="flex flex-col items-center space-y-2 text-center animate-fade-in">
@@ -73,7 +72,8 @@ export default function AuthPage() {
 
           {/* Form component */}
           <div className="transform transition-all duration-300 hover:scale-[1.005]">
-            <AuthForm mode={mode} />
+            <Outlet>
+            </Outlet>
           </div>
         </div>
       </main>

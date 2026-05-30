@@ -1,8 +1,9 @@
-import { type Auth, type BetterAuthOptions, betterAuth, isProduction } from "better-auth";
+import { type Auth, type BetterAuthOptions, betterAuth } from "better-auth";
 import { Db } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { sendEmail } from "../utils/sendVerificationMail.js";
 dotenv.config();
 
 export let authInstance: Auth<BetterAuthOptions>;
@@ -18,6 +19,41 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
       secret: process.env.BETTER_AUTH_SECRET,
       baseURL: process.env.BACKEND_URL,
       basePath: "/api/v1/auth",
+
+      emailAndPassword: {
+        enabled: true,
+        requireEmailVerification: true,
+        revokeSessionsOnPasswordReset:true,
+        onExistingUserSignUp: async ({ user }, request) => {
+          void sendEmail({
+            to: user.email,
+            subject: "Sign-up attempt with your email",
+            text: "Someone tried to create an account using your email address. If this was you, try signing in instead.",
+            tag:"existinguser"
+          });
+        },
+         sendResetPassword: async ({ user, url, token }, request) => {
+            void sendEmail({
+                to: user.email,
+                url,
+                subject: 'Reset your password',
+                tag:"forget",
+            })
+        },
+      },
+      emailVerification: {
+        sendOnSignUp: true, //Sends immediately after signup
+        sendOnSignIn: true, //if unverified user tries to login
+        sendVerificationEmail: async ({ user, url }) => {
+          await sendEmail({
+            to: user.email,
+            url,
+            subject: "Verify your email",
+            tag:"verify"
+          });
+        },
+        
+      },
 
       socialProviders: {
         github: {
