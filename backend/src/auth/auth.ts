@@ -23,12 +23,22 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
       emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
+        revokeSessionsOnPasswordReset:true,
         onExistingUserSignUp: async ({ user }, request) => {
           void sendEmail({
             to: user.email,
             subject: "Sign-up attempt with your email",
             text: "Someone tried to create an account using your email address. If this was you, try signing in instead.",
+            tag:"existinguser"
           });
+        },
+         sendResetPassword: async ({ user, url, token }, request) => {
+            void sendEmail({
+                to: user.email,
+                url,
+                subject: 'Reset your password',
+                tag:"forget",
+            })
         },
       },
       emailVerification: {
@@ -39,8 +49,10 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
             to: user.email,
             url,
             subject: "Verify your email",
+            tag:"verify"
           });
         },
+        
       },
 
       socialProviders: {
