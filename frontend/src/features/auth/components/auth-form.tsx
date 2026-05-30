@@ -79,13 +79,14 @@ export function AuthForm({
 }: IAuthPropos) {
   const isSignUp = mode === "signup";
   const { data: session, isPending } = authClient.useSession();
-
   const dispatch = useAppDispatch();
   const location = useLocation();
   const locationState = location.state as {
     from?: { pathname?: string };
+    message?: string;
   } | null;
   const redirectTo = locationState?.from?.pathname ?? "/home/dashboard";
+  const successMessage = locationState?.message;
 
   useEffect(() => {
     if (!session?.user) {
@@ -115,16 +116,22 @@ export function AuthForm({
 
       <CardContent className="space-y-4 px-6 pb-6">
         <div className="flex flex-col gap-3">
+          {successMessage && (
+            <div className="border-primary/20 bg-primary/5 rounded-2xl border p-3 text-center">
+              <p className="text-primary text-xs font-medium">{successMessage}</p>
+            </div>
+          )}
           {mode === "signup" ? (
             <form onSubmit={onSubmit} className="flex flex-col gap-3">
               <div>
                 <Label>Name</Label>
-                <Input name="name" type="text" placeholder="Eren" />
+                <Input className=" placeholder:text-xs" name="name" type="text" placeholder="Eren" />
               </div>
 
               <div>
                 <Label>Email</Label>
                 <Input
+                className=" placeholder:text-xs"
                   name="email"
                   type="email"
                   placeholder="example@gmail.com"
@@ -133,7 +140,7 @@ export function AuthForm({
 
               <div>
                 <Label>Password</Label>
-                <Input name="password" type="password" placeholder="........" />
+                <Input className=" placeholder:text-xs" name="password" type="password" placeholder="Password" />
               </div>
               <div>
                 <Button
@@ -157,6 +164,7 @@ export function AuthForm({
               <div>
                 <Label>Email</Label>
                 <Input
+                className=" placeholder:text-xs"
                   name="email"
                   type="email"
                   placeholder="example@gmail.com"
@@ -164,8 +172,15 @@ export function AuthForm({
               </div>
               <div>
                 <Label>Password</Label>
-                <Input name="password" type="password" placeholder="........" />
+                <Input className=" placeholder:text-xs" name="password" type="password" placeholder="Password" />
               </div>
+              <Link
+                className="text-xs underline underline-offset-2"
+                to={"/auth/forget-password"}
+                state={locationState}
+              >
+                Forget password
+              </Link>
               <div>
                 <Button
                   className={`border-border/80 bg-background/50 text-foreground hover:bg-background/20 relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}

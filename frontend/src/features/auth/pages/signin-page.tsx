@@ -60,6 +60,7 @@ const SignIn = () => {
       setActiveProvider(null);
     }
   };
+
   useEffect(() => {
     if (emailSent) {
       navigate("/auth/email-verify");

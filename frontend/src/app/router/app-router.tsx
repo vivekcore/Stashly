@@ -13,6 +13,8 @@ import AuthPage from "@/features/auth/pages/auth-page";
 import SignIn from "@/features/auth/pages/signin-page";
 import SignUp from "@/features/auth/pages/signup-page";
 import EmailVerification from "@/features/auth/components/EmailVerificationSent";
+import ForgotPassword from "@/features/auth/pages/forget-password";
+import ChangePassword from "@/features/auth/pages/reset-password";
 
 function AppRouter() {
   return (
@@ -25,6 +27,8 @@ function AppRouter() {
                   <Route path="signin" element={<SignIn/>}/>
                   <Route path="signup" element={<SignUp/>} />
                   <Route path="email-verify" element={<EmailVerification/>} />
+                  <Route path="forget-password" element={<ForgotPassword/>}/>
+                  <Route path="change-password" element={<ChangePassword/>}/>
             </Route>
            
             <Route path="/shared/:slug" element={<SharedContentPage />} />
