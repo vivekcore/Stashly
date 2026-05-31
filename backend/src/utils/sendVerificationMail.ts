@@ -1,105 +1,68 @@
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import ApiError from "./apiError.js";
+
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, 
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-});
 
-transporter.verify((err) => {
-  if (err) {
-    console.error("Gmail SMTP Connection Error:", err.message);
-  } else {
-    console.log("Gmail SMTP Connected Successfully");
+export async function sendEmail({ to, url, subject, text, tag }: { to: string; url?: string; subject: string; text?: string; tag?: string }) {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  const SENDER_EMAIL = process.env.EMAIL_USER; 
+
+  if (!BREVO_API_KEY) {
+    console.error("Missing BREVO_API_KEY");
+    throw new ApiError(500, "Email configuration error");
   }
-});
 
-interface IsendEmail {
-  to: string;
-  url?: string;
-  subject: string;
-  text?: string;
-  tag?: "verify" | "forget" | "existinguser";
-}
-
-export async function sendEmail({ to, url, subject, text, tag }: IsendEmail) {
-  const emailUser = process.env.EMAIL_USER;
-  
   try {
     let htmlContent = "";
-    
+
     if (tag === "verify") {
       htmlContent = `
-        <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
-          <h2 style="color: #1e293b;">Email Verification</h2>
-          <p style="color: #475569;">Click the button below to verify your email address:</p>
-          <a href="${url}"
-             style="
-               display: inline-block;
-               padding: 12px 24px;
-               background-color: #2563eb;
-               color: #ffffff;
-               text-decoration: none;
-               border-radius: 6px;
-               font-weight: 600;
-             ">
-             Verify Email
-          </a>
-          <p style="margin-top: 20px; font-size: 12px; color: #94a3b8;">
-            If you didn't request this, you can safely ignore this email.
-          </p>
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>Verify your email</h2>
+          <p>Click the button below to verify your Stashly account:</p>
+          <a href="${url}" style="background: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Verify Email</a>
         </div>
       `;
     } else if (tag === "forget") {
       htmlContent = `
-        <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
-          <h2 style="color: #1e293b;">Password Reset</h2>
-          <p style="color: #475569;">Click the button below to reset your password:</p>
-          <a href="${url}"
-             style="
-               display: inline-block;
-               padding: 12px 24px;
-               background-color: #2563eb;
-               color: #ffffff;
-               text-decoration: none;
-               border-radius: 6px;
-               font-weight: 600;
-             ">
-             Reset Password
-          </a>
-          <p style="margin-top: 20px; font-size: 12px; color: #94a3b8;">
-            If you didn't request this password reset, please ignore this email.
-          </p>
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>Reset Password</h2>
+          <p>Click the button below to reset your password:</p>
+          <a href="${url}" style="background: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
         </div>
       `;
+    } else {
+      htmlContent = `<p>${text || subject}</p>`;
     }
 
-    const mailOptions = {
-      from: `"Stashly" <${emailUser}>`,
-      to,
-      subject,
-      text: text || subject,
-      html: htmlContent,
-    };
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "api-key": BREVO_API_KEY,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: { name: "Stashly", email: SENDER_EMAIL },
+        to: [{ email: to }],
+        subject: subject,
+        htmlContent: htmlContent,
+      }),
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent: %s", info.messageId);
-    return info;
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error("Brevo API Error:", result);
+      throw new ApiError(500, "Email delivery failed via Brevo");
+    }
+
+    console.log("Email sent successfully via Brevo:", result.messageId);
+    return result;
 
   } catch (error) {
-    console.error("Nodemailer Error:", error);
+    console.error("Brevo Service Error:", error);
     throw new ApiError(500, "Email delivery failed. Please try again later.");
   }
 }

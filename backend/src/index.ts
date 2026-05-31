@@ -15,7 +15,7 @@ const startServer = async () => {
   try {
     await ConnectDB();
     const auth = getAuth();
-    console.log("DB connected");
+    ("DB connected");
 
     app.use(
       cors({
@@ -31,7 +31,7 @@ const startServer = async () => {
     app.use("/api/v1", rootRouter);
 
     app.get("/", (req, res) => {
-      const frontend = process.env.FRONTEND_URL as string
+      const frontend = process.env.FRONTEND_URL as string;
       res.redirect(frontend);
     });
     app.use(errorHandler);
