@@ -54,15 +54,11 @@ export async function sendEmail({ to, url, subject, text, tag }: { to: string; u
     const result = await response.json();
 
     if (!response.ok) {
-      console.error("Brevo API Error:", result);
       throw new ApiError(500, "Email delivery failed via Brevo");
     }
-
-    console.log("Email sent successfully via Brevo:", result.messageId);
     return result;
 
   } catch (error) {
-    console.error("Brevo Service Error:", error);
     throw new ApiError(500, "Email delivery failed. Please try again later.");
   }
 }

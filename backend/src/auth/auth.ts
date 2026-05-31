@@ -44,6 +44,7 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
       emailVerification: {
         sendOnSignUp: true, //Sends immediately after signup
         sendOnSignIn: true, //if unverified user tries to login
+        autoSignInAfterVerification:true,
         sendVerificationEmail: async ({ user, url }) => {
           await sendEmail({
             to: user.email,
