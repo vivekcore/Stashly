@@ -25,20 +25,20 @@ export const getAuth = (): Auth<BetterAuthOptions> => {
         requireEmailVerification: true,
         revokeSessionsOnPasswordReset:true,
         onExistingUserSignUp: async ({ user }, request) => {
-          void sendEmail({
+          sendEmail({
             to: user.email,
             subject: "Sign-up attempt with your email",
             text: "Someone tried to create an account using your email address. If this was you, try signing in instead.",
             tag:"existinguser"
-          });
+          }).catch(err => console.error("Email Error (onExistingUserSignUp):", err));
         },
          sendResetPassword: async ({ user, url, token }, request) => {
-            void sendEmail({
+            sendEmail({
                 to: user.email,
                 url,
                 subject: 'Reset your password',
                 tag:"forget",
-            })
+            }).catch(err => console.error("Email Error (sendResetPassword):", err));
         },
       },
       emailVerification: {
