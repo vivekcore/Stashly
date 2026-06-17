@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import { Link, Navigate, useLocation } from "react-router";
+import React from "react";
+import { Link, useLocation } from "react-router";
 import { Loader2 } from "lucide-react";
-import { useAppDispatch } from "@/app/store/hooks";
-import { authClient } from "@/lib/auth-client";
+
 import { Button } from "@/shared/ui/button";
 import {
   Card,
@@ -11,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
-import { clearUsername, setUsername } from "@/features/auth/store/user-slice";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
@@ -77,38 +75,23 @@ export function AuthForm({
   activeProvider,
   isLoading,
 }: IAuthPropos) {
-  const isSignUp = mode === "signup";
-  const { data: session, isPending } = authClient.useSession();
-  const dispatch = useAppDispatch();
+
   const location = useLocation();
   const locationState = location.state as {
     from?: { pathname?: string };
     message?: string;
   } | null;
-  const redirectTo = locationState?.from?.pathname ?? "/home/dashboard";
   const successMessage = locationState?.message;
 
-  useEffect(() => {
-    if (!session?.user) {
-      return;
-    }
-
-    dispatch(clearUsername());
-    dispatch(setUsername(session.user.name || session.user.email));
-  }, [dispatch, session?.user]);
-
-  if (session) {
-    return <Navigate to={redirectTo} replace state={{ from: location }} />;
-  }
 
   return (
     <Card className="border-border/80 bg-card/90 relative overflow-hidden rounded-3xl border p-1 shadow-2xl backdrop-blur-xl transition-all duration-300">
       <CardHeader className="space-y-1.5 pb-6">
         <CardTitle className="text-center text-2xl font-bold tracking-tight">
-          {isSignUp ? "Create Stashly Account" : "Welcome Back"}
+          {mode ? "Create Stashly Account" : "Welcome Back"}
         </CardTitle>
         <CardDescription className="text-muted-foreground mx-auto max-w-70 text-center text-sm leading-normal">
-          {isSignUp
+          {mode
             ? "Sign up to start organizing and decluttering your saved resources."
             : "Sign in to access your unified minimal dashboard."}
         </CardDescription>
@@ -118,20 +101,27 @@ export function AuthForm({
         <div className="flex flex-col gap-3">
           {successMessage && (
             <div className="border-primary/20 bg-primary/5 rounded-2xl border p-3 text-center">
-              <p className="text-primary text-xs font-medium">{successMessage}</p>
+              <p className="text-primary text-xs font-medium">
+                {successMessage}
+              </p>
             </div>
           )}
           {mode === "signup" ? (
             <form onSubmit={onSubmit} className="flex flex-col gap-3">
               <div>
                 <Label>Name</Label>
-                <Input className=" placeholder:text-xs" name="name" type="text" placeholder="Eren" />
+                <Input
+                  className="placeholder:text-xs"
+                  name="name"
+                  type="text"
+                  placeholder="Eren"
+                />
               </div>
 
               <div>
                 <Label>Email</Label>
                 <Input
-                className=" placeholder:text-xs"
+                  className="placeholder:text-xs"
                   name="email"
                   type="email"
                   placeholder="example@gmail.com"
@@ -140,13 +130,18 @@ export function AuthForm({
 
               <div>
                 <Label>Password</Label>
-                <Input className=" placeholder:text-xs" name="password" type="password" placeholder="Password" />
+                <Input
+                  className="placeholder:text-xs"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
               </div>
               <div>
                 <Button
                   className={`border-border/80 bg-background/50 text-foreground hover:bg-accent relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}
                   type="submit"
-                  disabled={isLoading || activeProvider !== null || isPending}
+                  disabled={isLoading || activeProvider !== null }
                 >
                   {isLoading ? (
                     <>
@@ -164,7 +159,7 @@ export function AuthForm({
               <div>
                 <Label>Email</Label>
                 <Input
-                className=" placeholder:text-xs"
+                  className="placeholder:text-xs"
                   name="email"
                   type="email"
                   placeholder="example@gmail.com"
@@ -172,7 +167,12 @@ export function AuthForm({
               </div>
               <div>
                 <Label>Password</Label>
-                <Input className=" placeholder:text-xs" name="password" type="password" placeholder="Password" />
+                <Input
+                  className="placeholder:text-xs"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
               </div>
               <Link
                 className="text-xs underline underline-offset-2"
@@ -185,7 +185,7 @@ export function AuthForm({
                 <Button
                   className={`border-border/80 bg-background/50 text-foreground hover:bg-background/20 relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99]`}
                   type="submit"
-                  disabled={isLoading || activeProvider !== null || isPending}
+                  disabled={isLoading || activeProvider !== null }
                 >
                   {isLoading ? (
                     <>
@@ -208,7 +208,7 @@ export function AuthForm({
                 className={`border-border/80 bg-background/50 text-foreground relative h-12 w-full cursor-pointer justify-center rounded-2xl border text-sm font-medium transition-all duration-300 hover:scale-[1.015] active:scale-[0.99] ${provider.hoverClass}`}
                 type="button"
                 onClick={() => onSocial(provider.id)}
-                disabled={activeProvider !== null || isPending}
+                disabled={activeProvider !== null}
               >
                 {isCurrentSubmitting ? (
                   <>
@@ -234,13 +234,13 @@ export function AuthForm({
 
         <div className="border-border/40 border-t pt-2 text-center">
           <p className="text-muted-foreground text-xs">
-            {isSignUp ? "Already have an account?" : "Need a new account?"}{" "}
+            {mode ? "Already have an account?" : "Need a new account?"}{" "}
             <Link
               className="text-primary hover:text-primary/80 font-semibold underline underline-offset-4 transition-colors"
-              to={isSignUp ? "/auth/signin" : "/auth/signup"}
+              to={mode ? "/auth/signin" : "/auth/signup"}
               state={locationState}
             >
-              {isSignUp ? "Sign in" : "Sign up"}
+              {mode ? "Sign in" : "Sign up"}
             </Link>
           </p>
         </div>

@@ -5,12 +5,13 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { Link, useLocation, useNavigate } from "react-router";
+import { useSessionContext } from "@/context/useSessionContext";
 
 export default function EmailVerification() {
   const [cooldown, setCooldown] = useState(0);
   const [sending, setSending] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
- const session = authClient.useSession();
+ const {session} = useSessionContext()
  const navigate = useNavigate()
 const location = useLocation();
   const locationState = location.state as {
@@ -20,11 +21,11 @@ const location = useLocation();
   const callbackURL = `${window.location.origin}${redirectTo}`;
 
   useEffect(() => {
-    if(session.data?.user.emailVerified){
+    if(session?.user.emailVerified){
       navigate("/home/dashboard")
     }
-  },[session.data?.user?.emailVerified,navigate])
- if(session.data?.user.emailVerified){
+  },[session?.user?.emailVerified,navigate])
+ if(session?.user.emailVerified){
   navigate("/#/home/dashboard");
  }
  
@@ -39,7 +40,7 @@ const location = useLocation();
     setSending(true);
 
    await authClient.sendVerificationEmail({
-      email: session.data?.user.email as string,
+      email: session?.user.email as string,
       callbackURL,
     });
 
@@ -65,7 +66,7 @@ const location = useLocation();
           </h1>
           <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
             We&apos;ve sent a verification link to{" "}
-            <span className="font-medium text-foreground">{session.data?.user.email}</span>
+            <span className="font-medium text-foreground">{session?.user.email}</span>
           </p>
 
           {/* Info box */}

@@ -6,11 +6,11 @@ import { Button } from "@/shared/ui/button";
 import { toggle } from "@/features/content/store/content-dialog-slice";
 import { toggle as logoutAleart } from "@/features/auth/store/logout-alert-slice";
 import { cn } from "@/shared/lib/utils";
-import { authClient } from "@/lib/auth-client";
+import { useSessionContext } from "@/context/useSessionContext";
 
 export function AppHeader() {
   const dispatch = useAppDispatch();
-  const { data: session } = authClient.useSession();
+  const {session } = useSessionContext();
   const isVerified = session?.user?.emailVerified;
 
   const mobileNavItems = [

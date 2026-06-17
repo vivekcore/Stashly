@@ -3,18 +3,18 @@ import { Navigate, Outlet, useLocation } from "react-router";
 import { LoaderCircle } from "lucide-react";
 
 import { useAppDispatch } from "@/app/store/hooks";
-import { authClient } from "@/lib/auth-client";
 import { AppHeader } from "@/features/shell/components/app-header";
 import { AppSidebar } from "@/features/shell/components/app-sidebar";
 
 import { AddContentDialog } from "@/features/content/components/add-content-dialog";
 import { LogoutDialog } from "@/features/auth/components/logout-dialog";
 import { setUsername } from "@/features/auth/store/user-slice";
+import { useSessionContext } from "@/context/useSessionContext";
 
 export function ProtectedLayout() {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { data: session, isPending } = authClient.useSession();
+  const {  session, isPending } = useSessionContext();
 
   useEffect(() => {
     if (session?.user) {

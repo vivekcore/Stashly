@@ -21,7 +21,7 @@ import {
 } from "@/shared/ui/card";
 import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
-import { authClient } from "@/lib/auth-client";
+import { useSessionContext } from "@/context/useSessionContext";
 
 
 const benefits = [
@@ -59,7 +59,7 @@ const features: Array<{
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { data: session } = authClient.useSession();
+  const { session } = useSessionContext();
   const { theme } = useTheme();
 
   const isDark =
