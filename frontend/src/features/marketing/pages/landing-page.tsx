@@ -22,8 +22,10 @@ import {
 import { SparklesCore } from "@/shared/ui/sparkles";
 import { useTheme } from "@/shared/theme/theme-provider";
 import { useSessionContext } from "@/context/useSessionContext";
-
-
+import { ImagesBadge } from "@/components/ui/images-badge";
+import Dashboard from "@/assets/dashboard.png";
+import Landingpage from "@/assets/landingpage.png";
+import Texteditor from "@/assets/texteditor.png";
 const benefits = [
   "Save links from the sources you already browse.",
   "Keep everything in one clean dashboard.",
@@ -66,8 +68,6 @@ export default function LandingPage() {
     theme === "dark" ||
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-  
 
   return (
     <div className="landing-page bg-background text-foreground relative min-h-screen overflow-hidden">
@@ -140,12 +140,17 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl space-y-10">
           <section className="space-y-8 text-center">
             <div className="flex justify-center">
-              <Badge
+              {/* <Badge
                 variant="outline"
                 className="border-primary/20 bg-primary/8 text-primary px-4 py-1.5"
               >
                 Minimal content workspace
-              </Badge>
+              </Badge> */}
+              <ImagesBadge
+                text="Minimal content workspace"
+                images={[Dashboard, Landingpage, Texteditor]}
+               
+              />
             </div>
 
             <div className="space-y-4">
