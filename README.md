@@ -4,23 +4,23 @@ Full-stack content management app with a rich text editor. Save links from YouTu
 
 ## Screenshots
 
-![Dashboard](frontend/src/assets/Screenshot%202026-05-25%20171940.png)
-![Text Editor](frontend/src/assets/Screenshot%202026-05-25%20172048.png)
-![Notes List](frontend/src/assets/Screenshot%202026-05-25%20172355.png)
+![Dashboard](frontend/src/assets/dashboard.png)
+![Text Editor](frontend/src/assets/texteditor.png)
+![Notes List](frontend/src/assets/landingpage.png)
 
 ## Tech Stack
 
-| Layer | Tech |
-|-------|------|
-| Frontend | React 19, TypeScript, Vite, TailwindCSS v4 |
-| Editor | Tiptap 3 (StarterKit, Highlight, TextAlign, Image, TaskList, Superscript/Subscript) |
-| State | Redux Toolkit |
-| Backend | Express 5, TypeScript |
-| Database | MongoDB + Mongoose 9 |
-| Auth | Better-Auth (Google / GitHub OAuth) |
-| Validation | Zod |
-| Icons | Lucide React |
-| Notifications | React Toastify |
+| Layer         | Tech                                                                                |
+| ------------- | ----------------------------------------------------------------------------------- |
+| Frontend      | React 19, TypeScript, Vite, TailwindCSS v4                                          |
+| Editor        | Tiptap 3 (StarterKit, Highlight, TextAlign, Image, TaskList, Superscript/Subscript) |
+| State         | Redux Toolkit                                                                       |
+| Backend       | Express 5, TypeScript                                                               |
+| Database      | MongoDB + Mongoose 9                                                                |
+| Auth          | Better-Auth (Google / GitHub OAuth)                                                 |
+| Validation    | Zod                                                                                 |
+| Icons         | Lucide React                                                                        |
+| Notifications | React Toastify                                                                      |
 
 ## Features
 
@@ -79,19 +79,19 @@ VITE_API_URL=http://localhost:3000
 
 All routes under `/api/v1`.
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | /auth/* | - | Better-Auth handlers |
-| POST | /content/add | Yes | Save a link |
-| GET | /content/my | Yes | List saved content |
-| GET | /content/websitetype | Yes | Filter by website |
-| DELETE | /content/My | Yes | Delete content |
-| GET | /content/:slug | - | Shared content by slug |
-| POST | /note/create | Yes | Create a note |
-| PATCH | /note/update/:noteId | Yes | Update a note |
-| DELETE | /note/delete/:noteId | Yes | Delete a note |
-| GET | /note/my-note/:noteId | Yes | Get a single note |
-| GET | /note/my-note-bulk | Yes | List notes (paginated) |
+| Method | Path                  | Auth | Description            |
+| ------ | --------------------- | ---- | ---------------------- |
+| GET    | /auth/\*              | -    | Better-Auth handlers   |
+| POST   | /content/add          | Yes  | Save a link            |
+| GET    | /content/my           | Yes  | List saved content     |
+| GET    | /content/websitetype  | Yes  | Filter by website      |
+| DELETE | /content/My           | Yes  | Delete content         |
+| GET    | /content/:slug        | -    | Shared content by slug |
+| POST   | /note/create          | Yes  | Create a note          |
+| PATCH  | /note/update/:noteId  | Yes  | Update a note          |
+| DELETE | /note/delete/:noteId  | Yes  | Delete a note          |
+| GET    | /note/my-note/:noteId | Yes  | Get a single note      |
+| GET    | /note/my-note-bulk    | Yes  | List notes (paginated) |
 
 ## Project Structure
 
@@ -128,19 +128,19 @@ Stashly/
 
 ### Backend
 
-| Command | Action |
-|---------|--------|
-| `npm run dev` | Build + start with nodemon |
-| `npm run build` | TypeScript compile |
-| `npm start` | Run compiled JS |
+| Command         | Action                     |
+| --------------- | -------------------------- |
+| `npm run dev`   | Build + start with nodemon |
+| `npm run build` | TypeScript compile         |
+| `npm start`     | Run compiled JS            |
 
 ### Frontend
 
-| Command | Action |
-|---------|--------|
-| `npm run dev` | Vite dev server (HMR) |
-| `npm run build` | TypeScript check + Vite build |
-| `npm run lint` | ESLint |
-| `npm run preview` | Preview production build |
+| Command           | Action                        |
+| ----------------- | ----------------------------- |
+| `npm run dev`     | Vite dev server (HMR)         |
+| `npm run build`   | TypeScript check + Vite build |
+| `npm run lint`    | ESLint                        |
+| `npm run preview` | Preview production build      |
 
 Built by [vivek](https://x.com/vivek_z9)
