@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import { store } from "@/app/store";
 import { HashRouter, Navigate, Route, Routes } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import { ProtectedLayout } from "@/features/shell/components/protected-layout";
 import { ThemeProvider } from "@/shared/theme/theme-provider";
 import ContentPage from "@/features/content/pages/content-page";
@@ -85,7 +85,6 @@ function AppRouter() {
         </ThemeProvider>
       </SessionProvider>
       <Analytics />
-      <SpeedInsights/>
     </Provider>
   );
 }

@@ -88,10 +88,10 @@ export function AuthForm({
     <Card className="border-border/80 bg-card/90 relative overflow-hidden rounded-3xl border p-1 shadow-2xl backdrop-blur-xl transition-all duration-300">
       <CardHeader className="space-y-1.5 pb-6">
         <CardTitle className="text-center text-2xl font-bold tracking-tight">
-          {mode ? "Create Stashly Account" : "Welcome Back"}
+          {mode === "signup" ? "Create Stashly Account" : "Welcome Back"}
         </CardTitle>
         <CardDescription className="text-muted-foreground mx-auto max-w-70 text-center text-sm leading-normal">
-          {mode
+          {mode === "signup"
             ? "Sign up to start organizing and decluttering your saved resources."
             : "Sign in to access your unified minimal dashboard."}
         </CardDescription>
@@ -234,13 +234,13 @@ export function AuthForm({
 
         <div className="border-border/40 border-t pt-2 text-center">
           <p className="text-muted-foreground text-xs">
-            {mode ? "Already have an account?" : "Need a new account?"}{" "}
+            {mode === "signup" ? "Already have an account?" : "Need a new account?"}{" "}
             <Link
               className="text-primary hover:text-primary/80 font-semibold underline underline-offset-4 transition-colors"
-              to={mode ? "/auth/signin" : "/auth/signup"}
+              to={mode === "signup" ? "/auth/signin" : "/auth/signup"}
               state={locationState}
             >
-              {mode ? "Sign in" : "Sign up"}
+              {mode === "signup" ? "Sign in" : "Sign up"}
             </Link>
           </p>
         </div>

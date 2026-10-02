@@ -67,3 +67,7 @@ yarn.lock
 plan.md
 # Testing
 .mocha_output
+
+.agents
+skills-lock.json
+.claude
