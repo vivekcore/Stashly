@@ -14,6 +14,7 @@ export function ThemeToggle() {
     <Button
       variant="outline"
       size="icon"
+      className="theme-toggle-control"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label="Toggle theme"
     >

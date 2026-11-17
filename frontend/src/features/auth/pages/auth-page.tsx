@@ -50,11 +50,11 @@ export default function AuthPage() {
         aria-hidden="true"
       >
         {/* Soft colorful glow blobs */}
-        <div className="absolute top-[10%] left-[15%] h-80 w-80 animate-pulse rounded-full bg-violet-600/10 blur-[100px] duration-6000 dark:bg-violet-500/8" />
-        <div className="absolute right-[15%] bottom-[15%] h-96 w-96 animate-pulse rounded-full bg-cyan-600/10 blur-[120px] duration-8000 [animation-delay:2s] dark:bg-cyan-500/8" />
+        <div className="auth-ambient-glow animate-pulse duration-6000" />
+        <div className="auth-ambient-glow-secondary animate-pulse duration-8000 [animation-delay:2s]" />
 
         {/* Ambient radial overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.8)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)]" />
+        <div className="auth-radial-overlay" />
 
         {/* Sparkles particle layer */}
         <SparklesCore
@@ -64,8 +64,8 @@ export default function AuthPage() {
           maxSize={1.4}
           particleDensity={40}
           speed={1.5}
-          particleColor={isDark ? "#a78bfa" : "#4f46e5"}
-          className="absolute inset-0 h-full w-full opacity-60 dark:opacity-40"
+          particleColor={isDark ? "#bfc0bb" : "#6b6d70"}
+          className="auth-particles h-full w-full"
         />
       </div>
 
@@ -105,7 +105,7 @@ export default function AuthPage() {
           </div>
 
           {/* Form component */}
-          <div className="transform transition-all duration-300 hover:scale-[1.005]">
+          <div className="auth-beam-card transform transition-all duration-300 hover:scale-[1.005]">
             <Outlet></Outlet>
           </div>
         </div>

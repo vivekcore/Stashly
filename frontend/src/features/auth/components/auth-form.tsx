@@ -43,7 +43,7 @@ const providers = [
       </svg>
     ),
     hoverClass:
-      "hover:bg-white/80 dark:hover:bg-neutral-800 hover:shadow-md hover:shadow-blue-500/5",
+      "hover:bg-white/80 dark:hover:bg-neutral-800 hover:shadow-md hover:shadow-black/10 dark:hover:shadow-white/5",
   },
   {
     id: "github",

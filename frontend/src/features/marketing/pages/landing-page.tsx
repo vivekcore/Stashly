@@ -1,382 +1,216 @@
 import {
-  ArrowRight,
-  CheckCircle2,
-  LayoutDashboard,
+  ArrowUpRight,
   Link2,
   NotebookPen,
-  type LucideIcon,
+  Search,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 
-import Logo from "@/assets/logo.png";
-import { ThemeToggle } from "@/shared/theme/theme-toggle";
-import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/card";
-import { SparklesCore } from "@/shared/ui/sparkles";
-import { useTheme } from "@/shared/theme/theme-provider";
-import { useSessionContext } from "@/context/useSessionContext";
-import { ImagesBadge } from "@/components/ui/images-badge";
 import Dashboard from "@/assets/dashboard.png";
 import Landingpage from "@/assets/landingpage.png";
+import Logo from "@/assets/logo.png";
 import Texteditor from "@/assets/texteditor.png";
-const benefits = [
-  "Save links from the sources you already browse.",
-  "Keep everything in one clean dashboard.",
-  "Turn saved content into notes without extra tools.",
-];
+import { useSessionContext } from "@/context/useSessionContext";
+import { SignalField } from "@/features/marketing/components/signal-field";
+import { SignalInbox } from "@/features/marketing/components/signal-inbox";
+import { ThemeToggle } from "@/shared/theme/theme-toggle";
+import { Button } from "@/shared/ui/button";
+import { SparklesCore } from "@/shared/ui/sparkles";
 
-const sources = ["YouTube", "Twitter/X", "LinkedIn", "Articles", "Notes"];
-
-const features: Array<{
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}> = [
+const story = [
   {
+    number: "01",
+    title: "Capture the signal",
+    description:
+      "Save videos, posts, articles, and half-formed ideas from the places you already browse.",
     icon: Link2,
-    title: "Capture quickly",
-    description:
-      "Save useful links and notes before they disappear into open tabs.",
   },
   {
-    icon: LayoutDashboard,
-    title: "Review clearly",
+    number: "02",
+    title: "Find the thread",
     description:
-      "Use one dashboard with a simpler structure and less visual noise.",
+      "Give everything one calm, searchable home so the useful parts stay close when you need them.",
+    icon: Search,
   },
   {
+    number: "03",
+    title: "Make it yours",
+    description:
+      "Move from collecting to thinking with notes and a focused editor beside your sources.",
     icon: NotebookPen,
-    title: "Write with context",
-    description:
-      "Move from saved material into working notes when it is time to synthesize.",
   },
 ];
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { session } = useSessionContext();
-  const { theme } = useTheme();
 
-  const isDark =
-    theme === "dark" ||
-    (theme === "system" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const goToApp = () => navigate(session ? "/home/dashboard" : "/auth/signin");
+  const goToSignup = () => navigate(session ? "/home/dashboard" : "/auth/signup");
 
   return (
-    <div className="landing-page bg-background text-foreground relative min-h-screen overflow-hidden">
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden="true"
-      >
-        {/* Soft colorful glow blobs */}
-        <div className="absolute top-[10%] left-[15%] h-80 w-80 animate-pulse rounded-full bg-violet-600/10 blur-[100px] duration-6000 dark:bg-violet-500/8" />
-        <div className="absolute right-[15%] bottom-[15%] h-96 w-96 animate-pulse rounded-full bg-cyan-600/10 blur-[120px] duration-8000 [animation-delay:2s] dark:bg-cyan-500/8" />
+    <div className="landing-page min-h-screen overflow-hidden bg-background text-foreground">
+      <a className="landing-skip-link" href="#main-content">
+        Skip to content
+      </a>
 
-        {/* Ambient radial overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.8)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)]" />
-
-        {/* Sparkles particle layer */}
-        <SparklesCore
-          id="auth-sparkles"
-          background="transparent"
-          minSize={0.4}
-          maxSize={1.4}
-          particleDensity={40}
-          speed={1.5}
-          particleColor={isDark ? "#a78bfa" : "#4f46e5"}
-          className="absolute inset-0 h-full w-full opacity-60 dark:opacity-40"
-        />
-      </div>
-
-      <header className="relative z-10 px-4 pt-4">
-        <div className="border-border/80 bg-card/90 mx-auto flex max-w-6xl items-center justify-between rounded-full border px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-2xl">
-              <img
-                src={Logo}
-                alt="Stashly logo"
-                className="h-5 w-5"
-                width={20}
-                height={20}
-              />
-            </div>
-            <div>
-              <p className="from-foreground to-foreground bg-linear-to-b bg-clip-text text-base font-semibold tracking-tight text-transparent sm:text-sm">
-                Stashly
-              </p>
-              <p className="text-muted-foreground hidden text-xs sm:block">
-                Save and organize useful content
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
+      <header className="landing-editorial-header">
+        <div className="landing-container flex items-center justify-between">
+          <a
+            href="#main-content"
+            className="landing-brand-link"
+            aria-label="Stashly home"
+          >
+            <span className="landing-mark">
+              <img src={Logo} alt="" width={20} height={20} />
+            </span>
+            <span className="landing-brand-word">Stashly</span>
+          </a>
+          <nav aria-label="Primary navigation" className="flex items-center gap-3">
+            <a className="landing-nav-link hidden sm:block" href="#story">
+              The method
+            </a>
+            <a className="landing-nav-link hidden sm:block" href="#proof">
+              Product
+            </a>
             <ThemeToggle />
-            <Button
-              size="sm"
-              className="cursor-pointer rounded-full px-4"
-              onClick={() => {
-                if (session) {
-                  navigate("/home/dashboard");
-                } else {
-                  navigate("/auth/signin");
-                }
-              }}
-            >
+            <Button className="rounded-full px-4" size="sm" onClick={goToApp}>
               {session ? "Open app" : "Get started"}
             </Button>
-          </div>
+          </nav>
         </div>
       </header>
 
-      <main className="relative z-10 px-4 pt-10 pb-16 md:pt-14">
-        <div className="mx-auto max-w-5xl space-y-10">
-          <section className="space-y-8 text-center">
-            <div className="flex justify-center">
-              {/* <Badge
-                variant="outline"
-                className="border-primary/20 bg-primary/8 text-primary px-4 py-1.5"
-              >
-                Minimal content workspace
-              </Badge> */}
-              <ImagesBadge
-                text="Minimal content workspace"
-                images={[Dashboard, Landingpage, Texteditor]}
-               
-              />
-            </div>
-
-            <div className="space-y-4">
-              <h1 className="mx-auto max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl md:text-6xl">
-                Save content fast. Find it later without the mess.
+      <main id="main-content">
+        <section className="signal-field-hero">
+          <div className="landing-hero-glow" aria-hidden="true" />
+          <SparklesCore
+            id="landing-particles"
+            background="transparent"
+            minSize={0.4}
+            maxSize={1.1}
+            particleDensity={28}
+            speed={0.45}
+            particleColor="#bfc0bb"
+            className="landing-particles absolute inset-0 z-0 h-full w-full"
+          />
+          <div className="landing-container relative z-10 grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
+            <div className="signal-field-copy">
+              <p className="landing-eyebrow">
+                {/* <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> */}
+                A calmer place for useful things
+              </p>
+              <h1 className="signal-field-title">
+                Keep the
+                <span>signal.</span>
+                <em>Close the noise.</em>
               </h1>
-              <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-8 md:text-lg">
-                Stashly keeps videos, posts, articles, and notes in one calm
-                workspace so your research stays usable.
+              <p className="signal-field-lede">
+                Stashly turns scattered links, posts, and ideas into one
+                searchable workspace—so your research stays usable after the
+                tab closes.
+              </p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <Button size="lg" className="rounded-full px-6" onClick={goToApp}>
+                  {session ? "Open dashboard" : "Start saving"}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Button>
+                <Button size="lg" variant="outline" className="rounded-full px-6" onClick={goToSignup}>
+                  See the method
+                </Button>
+              </div>
+              <div className="signal-field-meta">
+                <span>Capture</span>
+                <i aria-hidden="true" />
+                <span>Organize</span>
+                <i aria-hidden="true" />
+                <span>Write</span>
+              </div>
+            </div>
+            <SignalField />
+          </div>
+        </section>
+
+        <section className="landing-statement-section" aria-labelledby="statement-title">
+          <div className="landing-container">
+            <p className="landing-eyebrow">The reason it exists</p>
+            <h2 id="statement-title" className="landing-statement-title">
+              A place for the things
+              <span>you don&apos;t want to lose.</span>
+            </h2>
+          </div>
+        </section>
+
+        <section id="story" className="landing-story-section" aria-labelledby="story-title">
+          <div className="landing-container">
+            <div className="landing-section-intro">
+              <p className="landing-eyebrow">The method</p>
+              <h2 id="story-title">From scattered inputs to a useful thread.</h2>
+              <p>
+                Keep the collection lightweight. Give the best pieces enough
+                context to become something more.
               </p>
             </div>
-
-            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                size="lg"
-                className="cursor-pointer rounded-full px-6"
-                onClick={() => {
-                  if (session) {
-                    navigate("/home/dashboard");
-                  } else {
-                    navigate("/auth/signin");
-                  }
-                }}
-              >
-                {session ? "Open dashboard" : "Start saving"}
-                <ArrowRight size={16} />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="cursor-pointer rounded-full px-6"
-                onClick={() => {
-                  if (session) {
-                    navigate("/home/dashboard");
-                  } else {
-                    navigate("/auth/signup");
-                  }
-                }}
-              >
-                Create account
-              </Button>
-            </div>
-
-            <div className="mx-auto grid max-w-3xl gap-3 text-left sm:grid-cols-3">
-              {benefits.map((item) => (
-                <div
-                  key={item}
-                  className="border-border/80 bg-card/80 rounded-2xl border px-4 py-4"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 text-primary mt-0.5 rounded-full p-1">
-                      <CheckCircle2 className="h-4 w-4" />
-                    </div>
-                    <p className="text-muted-foreground text-sm leading-6">
-                      {item}
-                    </p>
+            <div className="landing-story-list">
+              {story.map(({ number, title, description, icon: Icon }) => (
+                <article className="landing-story-row" key={number}>
+                  <span className="landing-story-number">{number}</span>
+                  <Icon className="landing-story-icon" aria-hidden="true" />
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
                   </div>
-                </div>
+                  <ArrowUpRight className="landing-story-arrow" aria-hidden="true" />
+                </article>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section>
-            <Card className="border-border/80 bg-card/85">
-              <CardContent className="grid gap-6 p-6 md:grid-cols-[1.1fr_0.9fr] md:p-8">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Badge className="bg-primary text-primary-foreground">
-                      Workspace preview
-                    </Badge>
-                    <h2 className="text-2xl font-semibold tracking-tight">
-                      One place for saved material
-                    </h2>
-                    <p className="text-muted-foreground max-w-lg text-sm leading-7">
-                      The landing page now stays focused on the core use case
-                      instead of trying to explain every possible flow at once.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-3">
-                    {sources.map((item) => (
-                      <div
-                        key={item}
-                        className="border-border/80 bg-background/70 flex items-center justify-between rounded-2xl border px-4 py-3"
-                      >
-                        <p className="text-sm font-medium">{item}</p>
-                        <p className="text-muted-foreground text-xs">
-                          Saved to workspace
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  <div className="border-border/80 bg-secondary rounded-[1.75rem] border px-5 py-5">
-                    <p className="text-primary text-xs font-semibold tracking-[0.24em] uppercase">
-                      Dashboard
-                    </p>
-                    <p className="mt-3 text-4xl font-semibold tracking-[-0.05em]">
-                      142
-                    </p>
-                    <p className="text-muted-foreground mt-2 text-sm leading-6">
-                      Saved items organized in one cleaner interface.
-                    </p>
-                  </div>
-
-                  <div className="border-border/80 bg-background/72 rounded-[1.75rem] border px-5 py-5">
-                    <p className="text-sm font-semibold">Simple flow</p>
-                    <div className="mt-4 space-y-3">
-                      <MiniRow label="Capture" value="Links and notes" />
-                      <MiniRow label="Organize" value="One shared dashboard" />
-                      <MiniRow label="Write" value="Editor when needed" />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-6">
-            <div className="space-y-3 text-center">
-              <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
-                Why it works
+        <section id="proof" className="landing-proof-section" aria-labelledby="proof-title">
+          <div className="landing-container">
+            <div className="landing-proof-heading">
+              <div>
+                <p className="landing-eyebrow">Inside the workspace</p>
+                <h2 id="proof-title">Less tab juggling. More room to think.</h2>
+              </div>
+              <p>
+                Your links, notes, and working drafts stay in the same visual
+                field, ready for the next connection.
               </p>
-              <h2 className="text-3xl font-semibold tracking-[-0.04em] md:text-4xl">
-                Fewer sections. Clearer value.
-              </h2>
             </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {features.map((feature) => (
-                <FeatureCard key={feature.title} {...feature} />
-              ))}
+            <div className="landing-proof-stage">
+              <div className="landing-proof-stage-label">Product / 01</div>
+              <img className="landing-proof-stage-image landing-proof-stage-image-back" src={Texteditor} alt="Stashly text editor" loading="lazy" />
+              <img className="landing-proof-stage-image landing-proof-stage-image-side" src={Landingpage} alt="Stashly saved content list" loading="lazy" />
+              <img className="landing-proof-stage-image landing-proof-stage-image-front" src={Dashboard} alt="Stashly dashboard" loading="lazy" />
             </div>
-          </section>
+            <SignalInbox />
+          </div>
+        </section>
 
-          <section>
-            <Card className="border-border/80 bg-card/88">
-              <CardContent className="flex flex-col items-center gap-5 px-6 py-8 text-center md:px-8">
-                <Badge
-                  variant="outline"
-                  className="border-primary/20 bg-primary/8 text-primary"
-                >
-                  Ready to use
-                </Badge>
-                <div className="space-y-3">
-                  <h2 className="text-3xl font-semibold tracking-[-0.04em] md:text-4xl">
-                    Keep the good inputs. Drop the clutter around them.
-                  </h2>
-                  <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-7">
-                    The page now focuses on the main promise and uses a lighter,
-                    calmer visual structure in both themes.
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button
-                    size="lg"
-                    className="cursor-pointer rounded-full px-6"
-                    onClick={() => {
-                      if (session) {
-                        navigate("/home/dashboard");
-                      } else {
-                        navigate("/auth/signin");
-                      }
-                    }}
-                  >
-                    {session ? "Go to dashboard" : "Create your workspace"}
-                    <ArrowRight size={16} />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="cursor-pointer rounded-full px-6"
-                    onClick={() => {
-                      if (session) {
-                        navigate("/home/dashboard");
-                      } else {
-                        navigate("/auth/signup");
-                      }
-                    }}
-                  >
-                    Sign up
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
+        <section className="landing-final-section" aria-labelledby="final-title">
+          <div className="landing-container">
+            <p className="landing-eyebrow">Make space for better work</p>
+            <h2 id="final-title">
+              Keep the good stuff.
+              <span>Leave the rest behind.</span>
+            </h2>
+            <Button size="lg" className="mt-9 rounded-full px-7" onClick={goToSignup}>
+              {session ? "Go to dashboard" : "Create your workspace"}
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </section>
       </main>
-    </div>
-  );
-}
 
-function FeatureCard({
-  icon: Icon,
-  title,
-  description,
-}: {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Card className="border-border/80 bg-card/85">
-      <CardHeader className="space-y-4">
-        <div className="bg-primary/10 text-primary flex h-11 w-11 items-center justify-center rounded-2xl">
-          <Icon className="h-5 w-5" />
+      <footer className="landing-editorial-footer">
+        <div className="landing-container flex flex-col justify-between gap-3 sm:flex-row">
+          <span>Stashly — keep the good stuff.</span>
+          <span>Built for curious minds.</span>
         </div>
-        <div className="space-y-2">
-          <CardTitle className="text-xl">{title}</CardTitle>
-          <CardDescription className="text-sm leading-6">
-            {description}
-          </CardDescription>
-        </div>
-      </CardHeader>
-    </Card>
-  );
-}
-
-function MiniRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-border/80 bg-card flex items-center justify-between rounded-2xl border px-4 py-3">
-      <p className="text-muted-foreground text-sm">{label}</p>
-      <p className="text-sm font-medium">{value}</p>
+      </footer>
     </div>
   );
 }

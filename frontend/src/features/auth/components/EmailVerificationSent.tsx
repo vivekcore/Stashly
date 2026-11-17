@@ -56,8 +56,8 @@ const location = useLocation();
         <CardContent className="pt-8 pb-8 px-8 text-center">
 
           {/* Icon */}
-          <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-5">
-            <Mail className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+            <Mail className="h-8 w-8 text-foreground" />
           </div>
 
           {/* Heading */}
