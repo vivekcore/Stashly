@@ -371,6 +371,143 @@
     color: var(--muted-foreground);
   }
 
+  .landing-statement-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
+    gap: clamp(2rem, 7vw, 8rem);
+    align-items: center;
+  }
+
+  .landing-statement-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .signal-mirror-scene {
+    position: relative;
+    min-height: clamp(22rem, 34vw, 32rem);
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+
+  .signal-mirror-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(22rem, 82%);
+    aspect-ratio: 0.78;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklch, var(--foreground) 22%, var(--border));
+    border-radius: 2rem;
+    transform-style: preserve-3d;
+  }
+
+  .signal-mirror-panel::before {
+    position: absolute;
+    inset: -30% 20%;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      color-mix(in oklch, var(--foreground) 22%, transparent),
+      transparent 65%
+    );
+    content: "";
+    transform: translateX(-120%) rotate(12deg);
+    animation: signal-mirror-sweep 8s ease-in-out infinite;
+  }
+
+  .signal-mirror-panel-back {
+    background: color-mix(in oklch, var(--card) 72%, var(--primary));
+    box-shadow: 0 2rem 5rem color-mix(in oklch, var(--foreground) 13%, transparent);
+    opacity: 0.5;
+    transform: translate(-42%, -54%) translateZ(-42px) rotate(9deg) scale(0.92);
+  }
+
+  .signal-mirror-panel-front {
+    background:
+      linear-gradient(145deg, color-mix(in oklch, var(--foreground) 12%, transparent), transparent 48%),
+      color-mix(in oklch, var(--card) 88%, var(--primary));
+    box-shadow:
+      0 2.5rem 5rem color-mix(in oklch, var(--foreground) 20%, transparent),
+      inset 0 1px 0 color-mix(in oklch, var(--foreground) 24%, transparent);
+    transform: translate(-58%, -46%) translateZ(18px) rotate(-7deg);
+  }
+
+  .dark .signal-mirror-panel {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .signal-mirror-panel-back {
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.36);
+  }
+
+  .dark .signal-mirror-panel-front {
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 48%),
+      rgba(14, 15, 16, 0.88);
+    box-shadow:
+      0 2.5rem 5rem rgba(0, 0, 0, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .signal-mirror-reflection {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.75rem;
+    left: 1.5rem;
+    color: var(--foreground);
+    font-size: clamp(1.7rem, 3.5vw, 3.2rem);
+    font-weight: 550;
+    letter-spacing: -0.08em;
+    line-height: 0.88;
+    mask-image: linear-gradient(to bottom, transparent, black 24%, transparent 92%);
+    opacity: 0.16;
+    transform: translateZ(34px) scaleY(-1);
+    transform-origin: center;
+  }
+
+  .signal-mirror-orbit {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 130%;
+    height: 38%;
+    border: 1px solid color-mix(in oklch, var(--foreground) 28%, transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) translateZ(44px) rotate(-18deg);
+  }
+
+  .signal-mirror-orbit-two {
+    width: 112%;
+    height: 58%;
+    transform: translate(-50%, -50%) translateZ(36px) rotate(55deg);
+  }
+
+  .signal-mirror-pin {
+    position: absolute;
+    top: 30%;
+    right: 17%;
+    height: 0.55rem;
+    width: 0.55rem;
+    border: 1px solid var(--background);
+    border-radius: 50%;
+    background: var(--foreground);
+    box-shadow: 0 0 1.5rem color-mix(in oklch, var(--foreground) 75%, transparent);
+    transform: translateZ(54px);
+  }
+
+  .signal-mirror-caption {
+    position: absolute;
+    top: 1.3rem;
+    left: 1.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    transform: translateZ(40px);
+  }
+
   .landing-section-intro {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -1160,6 +1297,19 @@
       min-height: auto;
     }
 
+    .landing-statement-layout {
+      display: block;
+    }
+
+    .signal-mirror-scene {
+      min-height: 17rem;
+      margin-top: 2rem;
+    }
+
+    .signal-mirror-panel {
+      width: min(15rem, 72%);
+    }
+
     .signal-field {
       min-height: 27rem;
       margin-top: 1rem;
@@ -1300,6 +1450,15 @@
       transform: none;
       opacity: 0.2;
     }
+
+    .signal-mirror-panel::before {
+      animation: none;
+      transform: none;
+    }
+
+    .signal-mirror-orbit {
+      transform: translate(-50%, -50%) translateZ(44px) rotate(-18deg);
+    }
   }
 }
 
@@ -1326,6 +1485,22 @@
   }
   50% {
     transform: translate(-50%, -50%) rotate(-8deg) scale(1.02);
+  }
+}
+
+@keyframes signal-mirror-sweep {
+  0%,
+  35% {
+    opacity: 0;
+    transform: translateX(-120%) rotate(12deg);
+  }
+  55% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateX(120%) rotate(12deg);
   }
 }
 

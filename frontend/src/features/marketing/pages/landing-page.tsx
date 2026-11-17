@@ -3,8 +3,8 @@ import {
   Link2,
   NotebookPen,
   Search,
-  Sparkles,
 } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useNavigate } from "react-router";
 
 import Dashboard from "@/assets/dashboard.png";
@@ -14,6 +14,7 @@ import Texteditor from "@/assets/texteditor.png";
 import { useSessionContext } from "@/context/useSessionContext";
 import { SignalField } from "@/features/marketing/components/signal-field";
 import { SignalInbox } from "@/features/marketing/components/signal-inbox";
+import { SignalMirror } from "@/features/marketing/components/signal-mirror";
 import { ThemeToggle } from "@/shared/theme/theme-toggle";
 import { Button } from "@/shared/ui/button";
 import { SparklesCore } from "@/shared/ui/sparkles";
@@ -45,6 +46,7 @@ const story = [
 export default function LandingPage() {
   const navigate = useNavigate();
   const { session } = useSessionContext();
+  const shouldReduceMotion = useReducedMotion();
 
   const goToApp = () => navigate(session ? "/home/dashboard" : "/auth/signin");
   const goToSignup = () => navigate(session ? "/home/dashboard" : "/auth/signup");
@@ -68,12 +70,6 @@ export default function LandingPage() {
             <span className="landing-brand-word">Stashly</span>
           </a>
           <nav aria-label="Primary navigation" className="flex items-center gap-3">
-            <a className="landing-nav-link hidden sm:block" href="#story">
-              The method
-            </a>
-            <a className="landing-nav-link hidden sm:block" href="#proof">
-              Product
-            </a>
             <ThemeToggle />
             <Button className="rounded-full px-4" size="sm" onClick={goToApp}>
               {session ? "Open app" : "Get started"}
@@ -133,12 +129,15 @@ export default function LandingPage() {
         </section>
 
         <section className="landing-statement-section" aria-labelledby="statement-title">
-          <div className="landing-container">
-            <p className="landing-eyebrow">The reason it exists</p>
-            <h2 id="statement-title" className="landing-statement-title">
-              A place for the things
-              <span>you don&apos;t want to lose.</span>
-            </h2>
+          <div className="landing-container landing-statement-layout">
+            <div className="landing-statement-copy">
+              <p className="landing-eyebrow">The reason it exists</p>
+              <h2 id="statement-title" className="landing-statement-title">
+                A place for the things
+                <span>you don&apos;t want to lose.</span>
+              </h2>
+            </div>
+            <SignalMirror />
           </div>
         </section>
 
@@ -153,8 +152,18 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="landing-story-list">
-              {story.map(({ number, title, description, icon: Icon }) => (
-                <article className="landing-story-row" key={number}>
+              {story.map(({ number, title, description, icon: Icon }, index) => (
+                <motion.article
+                  className="landing-story-row"
+                  initial={shouldReduceMotion ? false : { y: 18 }}
+                  animate={shouldReduceMotion ? undefined : { y: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: shouldReduceMotion ? 0 : index * 0.12,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  key={number}
+                >
                   <span className="landing-story-number">{number}</span>
                   <Icon className="landing-story-icon" aria-hidden="true" />
                   <div>
@@ -162,7 +171,7 @@ export default function LandingPage() {
                     <p>{description}</p>
                   </div>
                   <ArrowUpRight className="landing-story-arrow" aria-hidden="true" />
-                </article>
+                </motion.article>
               ))}
             </div>
           </div>
